@@ -7,11 +7,12 @@
 <html>
 <fmt:bundle basename="messages">
 	<head>
-		<title>ADMIN</title>
+		<title>Autorização do Usuário</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	</head>
 <body>
+	<h2>Autorização de Usuário</h2>
 	<c:if test="${mensagensErros.existeErros}">
 		<div id="erro">
 			<ul>
@@ -21,17 +22,6 @@
 			</ul>
 		</div>
 	</c:if>
-	<div class="container">
-		<h2>Login</h2>
-		<form name="login" action="index.jsp" method="POST">
-			<input type="text" name="login" placeholder="<fmt:message key="nomeUsuario.Login"/>"/> <br> <br>
-			
-			<input type="text" name="senha" placeholder="<fmt:message key="senha.Login"/>"/> <br> <br>
-			
-			<input type="submit" name="loginOk" value="<fmt:message key="entrar.Login"/>">
-			
-		</form>
-	</div>
 </body>
 </fmt:bundle>
 </html>

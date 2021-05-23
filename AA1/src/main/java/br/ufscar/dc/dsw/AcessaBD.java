@@ -1,31 +1,28 @@
 package br.ufscar.dc.dsw;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import br.ufscar.dc.dsw.dao.EmpresaDAO;
+import br.ufscar.dc.dsw.dao.UsuarioDAO;
+import br.ufscar.dc.dsw.domain.Empresa;
+import br.ufscar.dc.dsw.domain.Usuario;
+import br.ufscar.dc.dsw.util.Erro;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class AcessaBD {
 	public static void main(String[] args) {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/SISTEMAEMPREGOS", "root", "root");
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from USUARIO");
-            while (rs.next()) {
-                System.out.print(rs.getLong("ID"));
-                System.out.print(", " + rs.getString("NOME"));
-                System.out.print(", " + rs.getString("LOGIN"));
-                System.out.print(", " + rs.getString("SENHA"));
-                System.out.println(", " + rs.getString("PAPEL"));
-            }
-            stmt.close();
-            con.close();
-        } catch (ClassNotFoundException e) {
-            System.out.println("A classe do driver de conexão não foi encontrada!");
-        } catch (SQLException e) {
-            System.out.println("O comando SQL não pode ser executado!");
+		EmpresaDAO dao = new EmpresaDAO();
+        List<Empresa> listaEmpresas = dao.getAll();
+        for(int i = 0 ; i < listaEmpresas.size(); i++) {
+        	System.out.println(listaEmpresas.get(i).getCnpj());
         }
     }
 }

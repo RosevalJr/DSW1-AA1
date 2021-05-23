@@ -2,6 +2,7 @@ package br.ufscar.dc.dsw.domain;
 
 public class Empresa {
 	
+	private Long id;
 	private Long cnpj;
 	private String nome;
 	private String senha;
@@ -9,13 +10,21 @@ public class Empresa {
 	private String descricao;
 	private String cidade;
 	
-	public Empresa(Long cnpj, String nome, String senha, String email, String descricao, String cidade) {
+	public Empresa(Long id, Long cnpj, String nome, String senha, String email, String descricao, String cidade) {
+		this.id = id;
 		this.cnpj = cnpj;
 		this.nome = nome;
 		this.senha = senha;
 		this.email = email;
 		this.descricao = descricao;
 		this.cidade = cidade;
+	}
+	public Long getId() {
+		return id;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	public Long getCnpj() {

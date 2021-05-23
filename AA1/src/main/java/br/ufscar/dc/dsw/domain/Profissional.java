@@ -1,16 +1,20 @@
 package br.ufscar.dc.dsw.domain;
 
+import java.sql.Date;
+
 public class Profissional {
 	
+	private Long id;
 	private Long cpf;
 	private String nome;
 	private String senha;
 	private String email;
 	private String telefone;
-	private Boolean sexo;
-	private String nascimento;
+	private String sexo;
+	private Date nascimento;
 	
-	public Profissional(Long cpf, String nome, String senha, String email, String telefone, Boolean sexo, String nascimento) {
+	public Profissional(Long id, Long cpf, String nome, String senha, String email, String telefone, String sexo, Date nascimento) {
+		this.id = id;
 		this.cpf = cpf;
 		this.nome = nome;
 		this.senha = senha;
@@ -19,6 +23,15 @@ public class Profissional {
 		this.sexo = sexo;
 		this.nascimento = nascimento;
 	}
+	
+	public Long getId() {
+		return id;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
+	}	
+	
 	
 	public Long getCpf() {
 		return cpf;
@@ -60,19 +73,19 @@ public class Profissional {
 		this.telefone = telefone;
 	}
 	
-	public Boolean getSexo() {
+	public String getSexo() {
 		return sexo;
 	}
 	
-	public void setSext(Boolean sexo) {
+	public void setSext(String sexo) {
 		this.sexo = sexo;
 	}
 	
-	public String getNascimento() {
+	public Date getNascimento() {
 		return nascimento;
 	}
 	
-	public void setNacimento(String nascimento) {
+	public void setNacimento(Date nascimento) {
 		this.nascimento = nascimento;
 	}
 }
