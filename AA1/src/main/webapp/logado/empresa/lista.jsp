@@ -68,7 +68,7 @@
                                 &nbsp;&nbsp;&nbsp;&nbsp;
                                 <a
 									href="/<%= contextPath %>/empresas/remocao?id=<c:out value='${empresa.id}' />"
-									onclick="return confirm('<fmt:message key="confirm.link" />');">
+									onclick="return confirm('<fmt:message key="confirmar.link" />');">
 									<fmt:message key="empresa.delete" />
 								</a>
 						</td>

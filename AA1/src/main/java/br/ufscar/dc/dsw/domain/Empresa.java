@@ -10,6 +10,10 @@ public class Empresa {
 	private String descricao;
 	private String cidade;
 	
+	public Empresa(Long id) {
+		this.id = id;
+	}
+	
 	public Empresa(Long id, Long cnpj, String nome, String senha, String email, String descricao, String cidade) {
 		this.id = id;
 		this.cnpj = cnpj;

@@ -65,6 +65,15 @@ public class EmpresasController extends HttpServlet {
     			case "/insercao":
     				insere(request, response);
     				break;
+    			case "/remocao":
+    				remove(request, response);
+    				break;
+    			case "/edicao":
+    				apresentaFormEdicao(request, response);
+    				break;
+    			case "/atualizacao":
+    				atualize(request, response);
+    				break;
                 default:
                     lista(request, response);
                     break;
@@ -100,6 +109,41 @@ public class EmpresasController extends HttpServlet {
 			throws ServletException, IOException {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/empresa/formulario.jsp");
 		dispatcher.forward(request, response);
+	}
+	
+	private void remove(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		Long id = Long.parseLong(request.getParameter("id"));
+
+		Empresa empresa = new Empresa(id);
+		dao.delete(empresa);
+		response.sendRedirect("lista");
+	}
+	
+	private void apresentaFormEdicao(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		Long id = Long.parseLong(request.getParameter("id"));
+		Empresa empresa = dao.get(id);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/empresa/formulario.jsp");
+		request.setAttribute("empresa", empresa);
+		dispatcher.forward(request, response);
+	}
+	
+	private void atualize(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		request.setCharacterEncoding("UTF-8");
+		Long id = Long.parseLong(request.getParameter("id"));
+		Long cnpj = Long.parseLong(request.getParameter("cnpj"));
+		String nome = request.getParameter("nome");
+		String senha = request.getParameter("senha");
+		String email = request.getParameter("email");
+		String descricao = request.getParameter("descricao");
+		String cidade = request.getParameter("cidade");
+		
+		Empresa empresa= new Empresa(id, cnpj, nome, senha, email, descricao, cidade);
+
+		dao.update(empresa);
+		response.sendRedirect("lista");
 	}
 
 }

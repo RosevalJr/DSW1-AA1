@@ -14,7 +14,7 @@
 			</c:otherwise>
 		</c:choose>
 	</caption>
-	<c:if test="${editora != null}">
+	<c:if test="${empresa != null}">
 		<input type="hidden" name="id" value="<c:out value='${empresa.id}' />" />
 	</c:if>
 	<tr>

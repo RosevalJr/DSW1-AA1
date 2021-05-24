@@ -84,18 +84,19 @@ public class EmpresaDAO extends GenericDAO{
     }
 
     public void update(Empresa empresa) {
-        String sql = "UPDATE EMPRESA SET NOME = ?, senha = ?, email = ?, descricao = ?, cidade = ? WHERE cnpj = ?";
+        String sql = "UPDATE EMPRESA SET CNPJ = ? ,NOME = ?, SENHA = ?, EMAIL = ?, DESCRICAO = ?, CIDADE = ? WHERE ID = ?";
 
         try {
             Connection conn = this.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
-
-            statement.setString(1, empresa.getNome());
-            statement.setString(2, empresa.getSenha());
-            statement.setString(3, empresa.getEmail());
-            statement.setString(4, empresa.getDescricao());
-            statement.setString(5, empresa.getCidade());
-            statement.setLong(6, empresa.getCnpj());
+            
+            statement.setLong(1, empresa.getCnpj());
+            statement.setString(2, empresa.getNome());
+            statement.setString(3, empresa.getSenha());
+            statement.setString(4, empresa.getEmail());
+            statement.setString(5, empresa.getDescricao());
+            statement.setString(6, empresa.getCidade());
+            statement.setLong(7, empresa.getId());
             statement.executeUpdate();
 
             statement.close();
