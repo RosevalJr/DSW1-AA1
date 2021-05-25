@@ -26,7 +26,7 @@
 		<form name="login" action="index.jsp" method="POST">
 			<input type="text" name="login" placeholder="<fmt:message key="nomeUsuario.Login"/>"/> <br> <br>
 			
-			<input type="text" name="senha" placeholder="<fmt:message key="senha.Login"/>"/> <br> <br>
+			<input type="password" name="senha" placeholder="<fmt:message key="senha.Login"/>"/> <br> <br>
 			
 			<input type="submit" name="loginOk" value="<fmt:message key="entrar.Login"/>">
 			

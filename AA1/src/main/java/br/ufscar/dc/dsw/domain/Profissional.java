@@ -24,6 +24,10 @@ public class Profissional {
 		this.nascimento = nascimento;
 	}
 	
+	public Profissional(Long id) {
+		this.id = id;
+	}
+	
 	public Long getId() {
 		return id;
 	}
