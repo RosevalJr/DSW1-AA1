@@ -27,7 +27,7 @@ public class ProfissionalDAO extends GenericDAO{
 			statement.setString(4, profissional.getEmail());
 			statement.setString(5, profissional.getTelefone());
 			statement.setString(6, profissional.getSexo());
-			statement.setDate(6, profissional.getNascimento());
+			statement.setDate(7, profissional.getNascimento());
 			statement.executeUpdate();
 			
 			statement.close();
@@ -86,19 +86,22 @@ public class ProfissionalDAO extends GenericDAO{
     }
 
     public void update(Profissional profissional) {
-        String sql = "UPDATE PROFISSIONAL SET NOME = ?, senha = ?, email = ?, telefone = ?, sexo = ?, nascimento = ? WHERE cpf = ?";
+        String sql = "UPDATE PROFISSIONAL SET CPF = ?, NOME = ?, SENHA = ?, EMAIL = ?, TELEFONE = ?, SEXO = ?, NASCIMENTO = ? WHERE id = ?;";
 
         try {
             Connection conn = this.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
-
-            statement.setString(1, profissional.getNome());
-            statement.setString(2, profissional.getSenha());
-            statement.setString(3, profissional.getEmail());
-            statement.setString(4, profissional.getTelefone());
-            statement.setString(5, profissional.getSexo());
-            statement.setDate(6, profissional.getNascimento());
-            statement.setLong(7, profissional.getCpf());
+            
+            System.out.println(profissional.getId());
+            
+            statement.setLong(1, profissional.getCpf());
+            statement.setString(2, profissional.getNome());
+            statement.setString(3, profissional.getSenha());
+            statement.setString(4, profissional.getEmail());
+            statement.setString(5, profissional.getTelefone());
+            statement.setString(6, profissional.getSexo());
+            statement.setDate(7, profissional.getNascimento());
+            statement.setLong(8, profissional.getId());
             statement.executeUpdate();
 
             statement.close();

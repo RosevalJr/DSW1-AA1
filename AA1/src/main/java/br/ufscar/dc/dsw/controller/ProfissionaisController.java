@@ -79,27 +79,53 @@ public class ProfissionaisController extends HttpServlet {
                     lista(request, response);
                     break;
             }
-        } catch (RuntimeException | IOException | ServletException | ParseException e) {
+        } catch (RuntimeException | IOException | ServletException e) {
             throw new ServletException(e);
         }
     }
     
-    private void insere(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ParseException {
+    private void insere(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		
-		Long cpf = Long.parseLong(request.getParameter("cpf"));
+		Long cpf;
+		
+		try {
+			cpf = Long.parseLong(request.getParameter("cpf"));
+		} catch(NumberFormatException nfe) {
+			System.out.println("a");
+			Erro erros = new Erro();
+			erros.add("O campo cpf deve ser apenas comoposto por números");
+			request.setAttribute("mensagens", erros);
+			RequestDispatcher rd = request.getRequestDispatcher("/cpfErro.jsp");
+			rd.forward(request, response);
+			return;
+		}
 		String nome = request.getParameter("nome");
 		String senha = request.getParameter("senha");
 		String email = request.getParameter("email");
 		String telefone = request.getParameter("telefone");
 		String sexo = request.getParameter("sexo");
 		
-		SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
-		java.util.Date nascimento = formato.parse(request.getParameter("nascimento"));
+		SimpleDateFormat formato;
+		java.util.Date nascimento;
+		try {
+			formato = new SimpleDateFormat("yyyy-MM-dd");
+			nascimento = formato.parse(request.getParameter("nascimento"));
+		} catch(ParseException pe) {
+			try {
+				formato = new SimpleDateFormat("yyyy/MM/dd");
+				nascimento = formato.parse(request.getParameter("nascimento"));
+			} catch(ParseException pe2) {
+				Erro erros = new Erro();
+				erros.add("Data deve ser inserida como ano/mês/dia ou ano-mês-dia");
+				request.setAttribute("mensagens", erros);
+				RequestDispatcher rd = request.getRequestDispatcher("/dataErro.jsp");
+				rd.forward(request, response);
+				return;
+			}
+		}
 		Date nasc = new Date(nascimento.getTime());
-		
 		Long id = (long) 0;
-		
 		Profissional profissional = new Profissional(id, cpf, nome, senha, email, telefone, sexo, nasc);
 		
 		dao.insert(profissional);
@@ -139,20 +165,46 @@ public class ProfissionaisController extends HttpServlet {
 	}
     
     private void atualize(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, ParseException {
+			throws ServletException, IOException {
 
-    	Long cpf = Long.parseLong(request.getParameter("cpf"));
+    	Long id = Long.parseLong(request.getParameter("id"));
+    	Long cpf;
+		
+		try {
+			cpf = Long.parseLong(request.getParameter("cpf"));
+		} catch(NumberFormatException nfe) {
+			Erro erros = new Erro();
+			erros.add("O campo cpf deve ser apenas comoposto por números");
+			request.setAttribute("mensagens", erros);
+			RequestDispatcher rd = request.getRequestDispatcher("/cpfErro.jsp");
+			rd.forward(request, response);
+			return;
+		}
 		String nome = request.getParameter("nome");
 		String senha = request.getParameter("senha");
 		String email = request.getParameter("email");
 		String telefone = request.getParameter("telefone");
 		String sexo = request.getParameter("sexo");
 		
-		SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
-		java.util.Date nascimento = formato.parse(request.getParameter("nascimento"));
+		SimpleDateFormat formato;
+		java.util.Date nascimento;
+		try {
+			formato = new SimpleDateFormat("yyyy-MM-dd");
+			nascimento = formato.parse(request.getParameter("nascimento"));
+		} catch(ParseException pe) {
+			try {
+				formato = new SimpleDateFormat("yyyy/MM/dd");
+				nascimento = formato.parse(request.getParameter("nascimento"));
+			} catch(ParseException pe2) {
+				Erro erros = new Erro();
+				erros.add("Data deve ser inserida como ano/mês/dia ou ano-mês-dia");
+				request.setAttribute("mensagens", erros);
+				RequestDispatcher rd = request.getRequestDispatcher("/dataErro.jsp");
+				rd.forward(request, response);
+				return;
+			}
+		}
 		Date nasc = new Date(nascimento.getTime());
-		
-		Long id = (long) 0;
 		
 		Profissional profissional = new Profissional(id, cpf, nome, senha, email, telefone, sexo, nasc);
 	
