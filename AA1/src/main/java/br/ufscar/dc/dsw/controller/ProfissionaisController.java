@@ -92,11 +92,10 @@ public class ProfissionaisController extends HttpServlet {
 		try {
 			cpf = Long.parseLong(request.getParameter("cpf"));
 		} catch(NumberFormatException nfe) {
-			System.out.println("a");
 			Erro erros = new Erro();
 			erros.add("O campo cpf deve ser apenas comoposto por números");
 			request.setAttribute("mensagens", erros);
-			RequestDispatcher rd = request.getRequestDispatcher("/cpfErro.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("/erros.jsp");
 			rd.forward(request, response);
 			return;
 		}
@@ -119,7 +118,7 @@ public class ProfissionaisController extends HttpServlet {
 				Erro erros = new Erro();
 				erros.add("Data deve ser inserida como ano/mês/dia ou ano-mês-dia");
 				request.setAttribute("mensagens", erros);
-				RequestDispatcher rd = request.getRequestDispatcher("/dataErro.jsp");
+				RequestDispatcher rd = request.getRequestDispatcher("/erros.jsp");
 				rd.forward(request, response);
 				return;
 			}
@@ -176,7 +175,7 @@ public class ProfissionaisController extends HttpServlet {
 			Erro erros = new Erro();
 			erros.add("O campo cpf deve ser apenas comoposto por números");
 			request.setAttribute("mensagens", erros);
-			RequestDispatcher rd = request.getRequestDispatcher("/cpfErro.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("/erros.jsp");
 			rd.forward(request, response);
 			return;
 		}
@@ -199,7 +198,7 @@ public class ProfissionaisController extends HttpServlet {
 				Erro erros = new Erro();
 				erros.add("Data deve ser inserida como ano/mês/dia ou ano-mês-dia");
 				request.setAttribute("mensagens", erros);
-				RequestDispatcher rd = request.getRequestDispatcher("/dataErro.jsp");
+				RequestDispatcher rd = request.getRequestDispatcher("/erros.jsp");
 				rd.forward(request, response);
 				return;
 			}

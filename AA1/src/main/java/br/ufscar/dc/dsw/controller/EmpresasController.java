@@ -82,7 +82,19 @@ public class EmpresasController extends HttpServlet {
 	private void insere(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 
-		Long cnpj = Long.parseLong(request.getParameter("cnpj"));
+		Long cnpj;
+		
+		try {
+			cnpj = Long.parseLong(request.getParameter("cnpj"));
+		}
+		catch (NumberFormatException nfe) {
+			Erro erros = new Erro();
+			erros.add("O campo cnpj deve ser apenas comoposto por números");
+			request.setAttribute("mensagens", erros);
+			RequestDispatcher rd = request.getRequestDispatcher("/erros.jsp");
+			rd.forward(request, response);
+			return;
+		}
 		String nome = request.getParameter("nome");
 		String senha = request.getParameter("senha");
 		String email = request.getParameter("email");
@@ -130,7 +142,19 @@ public class EmpresasController extends HttpServlet {
 
 		request.setCharacterEncoding("UTF-8");
 		Long id = Long.parseLong(request.getParameter("id"));
-		Long cnpj = Long.parseLong(request.getParameter("cnpj"));
+		Long cnpj;
+		
+		try {
+			cnpj = Long.parseLong(request.getParameter("cnpj"));
+		}
+		catch (NumberFormatException nfe) {
+			Erro erros = new Erro();
+			erros.add("O campo cnpj deve ser apenas comoposto por números");
+			request.setAttribute("mensagens", erros);
+			RequestDispatcher rd = request.getRequestDispatcher("/erros.jsp");
+			rd.forward(request, response);
+			return;
+		}
 		String nome = request.getParameter("nome");
 		String senha = request.getParameter("senha");
 		String email = request.getParameter("email");
