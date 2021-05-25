@@ -7,7 +7,7 @@
 <fmt:bundle basename="messages">
 
 	<head>
-		<title><fmt:message key="header.empresa" /></title>
+		<title><fmt:message key="header.profissional" /></title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	</head>
@@ -18,7 +18,7 @@
 		%>
 		<div align="center">
 			<h1>
-				<fmt:message key="empresa.receber" />
+				<fmt:message key="profissional.receber" />
 			</h1>
 			<h2>
 				<a href="/<%=contextPath%>/profissionais"> 
@@ -35,13 +35,13 @@
 				<br/>
 				<br/>
 				<a href="lista"> 
-					<fmt:message key="empresa.listar" />
+					<fmt:message key="profissional.listar" />
 				</a>
 			</h2>
 		</div>
 		<div align="center">
 			<c:choose>
-				<c:when test="${empresa != null}">
+				<c:when test="${profissional != null}">
 					<form action="atualizacao" method="post">
 						<%@include file="campos.jsp"%>
 					</form>

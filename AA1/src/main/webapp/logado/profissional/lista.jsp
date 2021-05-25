@@ -18,11 +18,11 @@
 		%>
 		<div align="center">
 			<h1>
-				<fmt:message key="empresa.receber" />
+				<fmt:message key="profissional.receber" />
 			</h1>
 			<h2>
-				<a href="/<%=contextPath%>/profissionais"> 
-					<fmt:message key="profissional.entidade" />
+				<a href="/<%=contextPath%>/empresas"> 
+					<fmt:message key="empresa.entidade" />
 				</a> 
 				&nbsp;&nbsp;&nbsp;
 				<a href="/<%=contextPath%>/usuarios"> 
@@ -34,7 +34,7 @@
 				</a>
 				<br/>
 				<br/>
-				<a href="/<%=contextPath%>/profissional/cadastro">
+				<a href="/<%=contextPath%>/profissionais/cadastro">
 					<fmt:message key="profissional.criar" />
 				</a> 
 			</h2>

@@ -77,9 +77,8 @@ public class ProfissionalDAO extends GenericDAO{
             Connection conn = this.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
 
-            statement.setLong(1, profissional.getId());
+            statement.setLong(1, profissional.getId());      
             statement.executeUpdate();
-
             statement.close();
             conn.close();
         } catch (SQLException e) {

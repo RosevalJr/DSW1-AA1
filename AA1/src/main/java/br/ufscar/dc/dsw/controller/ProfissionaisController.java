@@ -116,7 +116,7 @@ public class ProfissionaisController extends HttpServlet {
     
     private void apresentaFormCadastro(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/funcionario/formulario.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/profissional/formulario.jsp");
 		dispatcher.forward(request, response);
 	}
     
@@ -124,6 +124,7 @@ public class ProfissionaisController extends HttpServlet {
 		Long id = Long.parseLong(request.getParameter("id"));
 
 		Profissional profissional = new Profissional(id);
+		System.out.println(id);
 		dao.delete(profissional);
 		response.sendRedirect("lista");
 	}
