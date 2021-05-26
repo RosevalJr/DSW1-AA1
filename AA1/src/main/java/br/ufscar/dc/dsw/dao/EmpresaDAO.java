@@ -161,7 +161,6 @@ public class EmpresaDAO extends GenericDAO{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    	System.out.println("HAHHA");
     }
 
     public Empresa get(Long id) {
