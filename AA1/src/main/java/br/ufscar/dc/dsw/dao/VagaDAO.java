@@ -100,4 +100,36 @@ public class VagaDAO extends GenericDAO{
         return listaVagasAbertas;
     }
 	
+	public Vaga getVaga(Long id) {
+
+		Vaga vaga = null;
+		String sql = "SELECT ID, IDEMPRESA, CNPJ,  VAGA.DESCRICAO, REMUNERACAO, DATALIMITE FROM VAGA, EMPRESA WHERE IDEMPRESA = EMPRESA.IDUSUARIO AND ID = ?";
+	
+		try {
+			Connection conn = this.getConnection();
+			PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			
+			statement = conn.prepareStatement(sql);
+			statement.setLong(1, id);
+			
+			ResultSet resultSet = statement.executeQuery();
+			
+			if(resultSet.next()) {
+            	Long idLocal = resultSet.getLong("id");
+            	Long cnpjEmpresa = resultSet.getLong("cnpj");
+                String descricao = resultSet.getString("descricao");
+                float remuneracao = resultSet.getFloat("remuneracao");
+                Date dataLimite = resultSet.getDate("datalimite");
+                vaga = new Vaga(idLocal, cnpjEmpresa, descricao, remuneracao, dataLimite);
+            }
+
+            resultSet.close();
+            statement.close();
+            conn.close();	
+		} catch (SQLException e) {
+		}
+		
+		return vaga;
+	}
+	
 }

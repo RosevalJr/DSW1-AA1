@@ -31,7 +31,7 @@
 		</div>
 	</c:if>
 	
-	<h4>
+	<h2>
 		<a href="/<%=contextPath%>/empresas"> 
 			<fmt:message key="empresa.entidade" />
 		</a> 
