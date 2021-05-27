@@ -18,8 +18,8 @@ import br.ufscar.dc.dsw.domain.Profissional;
 import br.ufscar.dc.dsw.domain.Usuario;
 import br.ufscar.dc.dsw.util.Erro;
 
-@WebServlet(urlPatterns = "/profissionais/*")
-public class ProfissionaisController extends HttpServlet {
+@WebServlet(urlPatterns = "/admins/profissionais/*")
+public class ProfissionaisAdminController extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -46,7 +46,7 @@ public class ProfissionaisController extends HttpServlet {
 			return;
 		} else if (!usuario.getPapel().equals("admin")) {
 			erros.add("Acesso não autorizado!");
-			erros.add("Apenas Papel [ADMINISTRADOR] tem acesso a essa página");
+			erros.add("Apenas Papel [admin] tem acesso a essa página");
 			request.setAttribute("mensagens", erros);
 			RequestDispatcher rd = request.getRequestDispatcher("/naoAutori.jsp");
 			rd.forward(request, response);
@@ -135,13 +135,13 @@ public class ProfissionaisController extends HttpServlet {
     private void lista(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Profissional> listaProfissionais = dao.getAll();
         request.setAttribute("listaProfissionais", listaProfissionais);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/profissional/lista.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/admin/profissional/lista.jsp");
         dispatcher.forward(request, response);
     }
     
     private void apresentaFormCadastro(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/profissional/formulario.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/admin/profissional/formulario.jsp");
 		dispatcher.forward(request, response);
 	}
     
@@ -158,14 +158,15 @@ public class ProfissionaisController extends HttpServlet {
 			throws ServletException, IOException {
 		Long id = Long.parseLong(request.getParameter("id"));
 		Profissional profissional = dao.get(id);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/profissional/formulario.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/admin/profissional/formulario.jsp");
 		request.setAttribute("profissional", profissional);
 		dispatcher.forward(request, response);
 	}
     
     private void atualize(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+    	
+    	request.setCharacterEncoding("UTF-8");
     	Long id = Long.parseLong(request.getParameter("id"));
     	Long cpf;
 		

@@ -7,7 +7,7 @@
 <fmt:bundle basename="messages">
 
 	<head>
-		<title><fmt:message key="header.profissional" /></title>
+		<title><fmt:message key="header.vaga" /></title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	</head>
@@ -18,40 +18,23 @@
 		%>
 		<div align="center">
 			<h1>
-				<fmt:message key="profissional.receber" />
+				<fmt:message key="vaga.formulario" /> <c:out value="${usuarioLogado.nome}" />
 			</h1>
 			<h2>
-				<a href="/<%=contextPath%>/profissionais"> 
-					<fmt:message key="profissional.entidade" />
-				</a> 
-				&nbsp;&nbsp;&nbsp;
-				<a href="/<%=contextPath%>/usuarios"> 
-					<fmt:message key="usuario.entidade" />
-				</a> 
-				&nbsp;&nbsp;&nbsp;
 				<a href="${pageContext.request.contextPath}/logout.jsp"> 
 					<fmt:message key="sair.link" />
 				</a>
 				<br/>
 				<br/>
 				<a href="lista"> 
-					<fmt:message key="profissional.listar" />
+					<fmt:message key="vaga.listar" />
 				</a>
 			</h2>
 		</div>
 		<div align="center">
-			<c:choose>
-				<c:when test="${profissional != null}">
-					<form action="atualizacao" method="post">
-						<%@include file="campos.jsp"%>
-					</form>
-				</c:when>
-				<c:otherwise>
-					<form action="insercao" method="post">
-						<%@include file="campos.jsp"%>
-					</form>
-				</c:otherwise>
-			</c:choose>
+				<form action="insercao" method="post">
+					<%@include file="campos.jsp"%>
+				</form>
 		</div>
 		<c:if test="${!empty requestScope.mensagens}">
 			<ul class="erro">

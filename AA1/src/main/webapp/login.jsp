@@ -12,6 +12,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	</head>
 <body>
+	<%
+		String contextPath = request.getContextPath().replace("/", "");
+	%>
 	<c:if test="${mensagensErros.existeErros}">
 		<div id="erro">
 			<ul>
@@ -21,7 +24,7 @@
 			</ul>
 		</div>
 	</c:if>
-	<div class="container">
+	<div align="center" class="container">
 		<h2>Login</h2>
 		<form name="login" action="index.jsp" method="POST">
 			<input type="text" name="login" placeholder="<fmt:message key="nomeUsuario.Login"/>"/> <br> <br>
@@ -29,8 +32,13 @@
 			<input type="password" name="senha" placeholder="<fmt:message key="senha.Login"/>"/> <br> <br>
 			
 			<input type="submit" name="loginOk" value="<fmt:message key="entrar.Login"/>">
-			
 		</form>
+		<br>
+		<h2>
+				<a href="/<%=contextPath%>/listarVagasAbertas"> 
+					<fmt:message key="header.vaga" />
+				</a>
+		</h2>
 	</div>
 </body>
 </fmt:bundle>

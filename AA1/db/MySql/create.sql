@@ -16,7 +16,7 @@ CREATE TABLE USUARIO( -- CORRETO.
 	NOME VARCHAR(256) NOT NULL,
 	LOGIN VARCHAR(256) NOT NULL UNIQUE,
 	SENHA VARCHAR(64) NOT NULL,
-	PAPEL VARCHAR(5),
+	PAPEL VARCHAR(20),
 	PRIMARY KEY (ID)
 );
 
@@ -70,11 +70,11 @@ CREATE TABLE CANDIDATURA (
 -- Inserindo elementos exemplo.
 -- Usuarios
 INSERT INTO USUARIO (NOME ,LOGIN ,SENHA, PAPEL) VALUES("Carlos da Silva", "admin","admin","admin");
-INSERT INTO USUARIO (NOME ,LOGIN ,SENHA, PAPEL) VALUES("Roseval Junior", "rdmaljr@hotmail.com","123password","user");
-INSERT INTO USUARIO (NOME ,LOGIN ,SENHA, PAPEL) VALUES("Marcela Ribeiro", "marcela@hotmail.com","1234password","user");
-INSERT INTO USUARIO (NOME ,LOGIN ,SENHA, PAPEL) VALUES("José da Silva", "jose@estudante.ufscar.br","1235password","user");
-INSERT INTO USUARIO (NOME ,LOGIN ,SENHA, PAPEL) VALUES("MICROSOFT", "microsoft@hotmail.com","1236password","user");
-INSERT INTO USUARIO (NOME ,LOGIN ,SENHA, PAPEL) VALUES("PROGRAMAS .INC", "roseval@estudante.ufscar.br","1237password","user");
+INSERT INTO USUARIO (NOME ,LOGIN ,SENHA, PAPEL) VALUES("Roseval Junior", "rdmaljr@hotmail.com","123password","userProfissional");
+INSERT INTO USUARIO (NOME ,LOGIN ,SENHA, PAPEL) VALUES("Marcela Ribeiro", "marcela@hotmail.com","1234password","userProfissional");
+INSERT INTO USUARIO (NOME ,LOGIN ,SENHA, PAPEL) VALUES("José da Silva", "jose@estudante.ufscar.br","1235password","userProfissional");
+INSERT INTO USUARIO (NOME ,LOGIN ,SENHA, PAPEL) VALUES("MICROSOFT", "microsoft@hotmail.com","1236password","userEmpresa");
+INSERT INTO USUARIO (NOME ,LOGIN ,SENHA, PAPEL) VALUES("PROGRAMAS .INC", "roseval@estudante.ufscar.br","1237password","userEmpresa");
 
 -- Profissionais
 INSERT INTO PROFISSIONAL VALUES(2, 82128243068, "5539806798860", "m", "2000-06-25");
@@ -86,8 +86,10 @@ INSERT INTO EMPRESA VALUES(5, 61189483000109, "Essa empresa vende windows", "Sã
 INSERT INTO EMPRESA VALUES(6, 32989207000127, "Essa empresa vende programas", "Bahia");
 
 -- Vagas
-INSERT INTO VAGA (IDEMPRESA, DESCRICAO, REMUNERACAO, DATALIMITE) VALUES(5, "Vendedor de windows", 1000, "2020-06-02");
-INSERT INTO VAGA (IDEMPRESA, DESCRICAO, REMUNERACAO, DATALIMITE) VALUES(6, "Vendedor de programas", 3000, "2020-06-10");
+INSERT INTO VAGA (IDEMPRESA, DESCRICAO, REMUNERACAO, DATALIMITE) VALUES(5, "Vendedor de windows", 1000.1, "2021-06-02");
+INSERT INTO VAGA (IDEMPRESA, DESCRICAO, REMUNERACAO, DATALIMITE) VALUES(6, "Vendedor de programas", 3000.2, "2021-06-10");
+INSERT INTO VAGA (IDEMPRESA, DESCRICAO, REMUNERACAO, DATALIMITE) VALUES(6, "Essa aqui vai dar fechada!", 3000.3, "2021-03-01");
+INSERT INTO VAGA (IDEMPRESA, DESCRICAO, REMUNERACAO, DATALIMITE) VALUES(6, "Mesmo dia fica aberta!", 3000.3, "2021-05-27");
 
 -- Candidaturas
 INSERT INTO CANDIDATURA VALUES(1, 5, 2);

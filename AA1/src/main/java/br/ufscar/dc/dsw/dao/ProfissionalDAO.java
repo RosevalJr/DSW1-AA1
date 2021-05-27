@@ -26,7 +26,7 @@ public class ProfissionalDAO extends GenericDAO{
 			statement.setString(1, profissional.getNome());
 			statement.setString(2, profissional.getEmail());
 			statement.setString(3, profissional.getSenha());
-			statement.setString(4, "user");
+			statement.setString(4, "userProfissional");
 			statement.executeUpdate();
 			
 			statement.close();

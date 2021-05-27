@@ -1,8 +1,10 @@
 package br.ufscar.dc.dsw.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,13 +13,24 @@ import javax.servlet.http.HttpServletResponse;
 
 /* Importa classes que armazenam dados a serem usados pelos controladores. */
 import br.ufscar.dc.dsw.util.Erro;
+import br.ufscar.dc.dsw.dao.EmpresaDAO;
 import br.ufscar.dc.dsw.dao.UsuarioDAO;
+import br.ufscar.dc.dsw.dao.VagaDAO;
+import br.ufscar.dc.dsw.domain.Empresa;
 import br.ufscar.dc.dsw.domain.Usuario;
+import br.ufscar.dc.dsw.domain.Vaga;
 
-@WebServlet(name = "Index", urlPatterns = { "/index.jsp", "/logout.jsp" })
+@WebServlet(name = "Index", urlPatterns = { "/index.jsp", "/logout.jsp", "/listarVagasAbertas" })
 public class IndexController extends HttpServlet{
 	
 	private static final long serialVersionUID = 1L;
+	
+    private VagaDAO dao;
+
+    @Override
+    public void init() {
+        dao = new VagaDAO();
+    }
 	
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Erro erros = new Erro(); // Variavel para guardar os erros.
@@ -37,9 +50,12 @@ public class IndexController extends HttpServlet{
 					if(usuario.getSenha().equals(senha)) {
 						request.getSession().setAttribute("usuarioLogado", usuario);
 						if(usuario.getPapel().equals("admin")) {
-							response.sendRedirect("empresas/");
+							response.sendRedirect("admins/empresas/");
 						} else {
-							response.sendRedirect("users/");
+							if(usuario.getPapel().equals("userEmpresa"))
+								response.sendRedirect("users/empresas");
+							else
+								response.sendRedirect("users/profissionais");
 						}
 						return;
 					} else {
@@ -53,6 +69,14 @@ public class IndexController extends HttpServlet{
 		}
 		request.getSession().invalidate(); // Caso nao logado invalida a sessao.
 		request.setAttribute("mensagensErros", erros);
+		
+        String action = request.getRequestURI();
+        if (action == null) {
+            action = "";
+        }
+        if(action.equals("/AA1/listarVagasAbertas")) {
+        	lista(request, response);
+        }
 		
 		String URL = "/login.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(URL);
@@ -68,5 +92,12 @@ public class IndexController extends HttpServlet{
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		processRequest(request, response);
 	}
+	
+    private void lista(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<Vaga> listaVagasAbertas = dao.getAllAberta();
+        request.setAttribute("listaVagasAbertas", listaVagasAbertas);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/listarVagasAbertas.jsp");
+        dispatcher.forward(request, response);
+    }
 
 }

@@ -21,12 +21,8 @@
 				<fmt:message key="empresa.receber" />
 			</h1>
 			<h2>
-				<a href="/<%=contextPath%>/profissionais"> 
+				<a href="/<%=contextPath%>/admins/profissionais"> 
 					<fmt:message key="profissional.entidade" />
-				</a> 
-				&nbsp;&nbsp;&nbsp;
-				<a href="/<%=contextPath%>/usuarios"> 
-					<fmt:message key="usuario.entidade" />
 				</a> 
 				&nbsp;&nbsp;&nbsp;
 				<a href="${pageContext.request.contextPath}/logout.jsp"> 
@@ -34,7 +30,7 @@
 				</a>
 				<br/>
 				<br/>
-				<a href="/<%=contextPath%>/empresas/cadastro">
+				<a href="/<%=contextPath%>/admins/empresas/cadastro">
 					<fmt:message key="empresa.criar" />
 				</a> 
 			</h2>
@@ -62,12 +58,12 @@
 						<td><c:out value="${empresa.descricao}" /></td>
 						<td><c:out value="${empresa.cidade}" /></td>
 						<td><a
-							href="/<%= contextPath %>/empresas/edicao?id=<c:out value='${empresa.id}' />">
+							href="/<%= contextPath %>/admins/empresas/edicao?id=<c:out value='${empresa.id}' />">
 								<fmt:message key="empresa.update" />
 						</a> 
                                 &nbsp;&nbsp;&nbsp;&nbsp;
                                 <a
-									href="/<%= contextPath %>/empresas/remocao?id=<c:out value='${empresa.id}' />"
+									href="/<%= contextPath %>/admins/empresas/remocao?id=<c:out value='${empresa.id}' />"
 									onclick="return confirm('<fmt:message key="confirmar.link" />');">
 									<fmt:message key="empresa.delete" />
 								</a>

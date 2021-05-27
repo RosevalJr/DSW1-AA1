@@ -25,10 +25,6 @@
 					<fmt:message key="profissional.entidade" />
 				</a> 
 				&nbsp;&nbsp;&nbsp;
-				<a href="/<%=contextPath%>/usuarios"> 
-					<fmt:message key="usuario.entidade" />
-				</a> 
-				&nbsp;&nbsp;&nbsp;
 				<a href="${pageContext.request.contextPath}/logout.jsp"> 
 					<fmt:message key="sair.link" />
 				</a>

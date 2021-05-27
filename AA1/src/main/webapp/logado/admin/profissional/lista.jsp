@@ -21,12 +21,8 @@
 				<fmt:message key="profissional.receber" />
 			</h1>
 			<h2>
-				<a href="/<%=contextPath%>/empresas"> 
+				<a href="/<%=contextPath%>/admins/empresas"> 
 					<fmt:message key="empresa.entidade" />
-				</a> 
-				&nbsp;&nbsp;&nbsp;
-				<a href="/<%=contextPath%>/usuarios"> 
-					<fmt:message key="usuario.entidade" />
 				</a> 
 				&nbsp;&nbsp;&nbsp;
 				<a href="${pageContext.request.contextPath}/logout.jsp"> 
@@ -34,7 +30,7 @@
 				</a>
 				<br/>
 				<br/>
-				<a href="/<%=contextPath%>/profissionais/cadastro">
+				<a href="/<%=contextPath%>/admins/profissionais/cadastro">
 					<fmt:message key="profissional.criar" />
 				</a> 
 			</h2>
@@ -64,12 +60,12 @@
 						<td><c:out value="${profissional.sexo}" /></td>
 						<td><c:out value="${profissional.nascimento}" /></td>
 						<td><a
-							href="/<%= contextPath %>/profissionais/edicao?id=<c:out value='${profissional.id}' />">
+							href="/<%= contextPath %>/admins/profissionais/edicao?id=<c:out value='${profissional.id}' />">
 								<fmt:message key="profissional.update" />
 						</a> 
                                 &nbsp;&nbsp;&nbsp;&nbsp;
                                 <a
-									href="/<%= contextPath %>/profissionais/remocao?id=<c:out value='${profissional.id}' />"
+									href="/<%= contextPath %>/admins/profissionais/remocao?id=<c:out value='${profissional.id}' />"
 									onclick="return confirm('<fmt:message key="confirmar.link" />');">
 									<fmt:message key="profissional.delete" />
 								</a>
