@@ -12,7 +12,7 @@ public class Vaga {
 	private Date dataLimite;
 	private boolean aberta;
 	
-	public Vaga(Long cnpjEmpresa, Long idVaga, String descricao, Float remuneracao, Date dataLimite) {
+	public Vaga(Long idVaga, Long cnpjEmpresa, String descricao, Float remuneracao, Date dataLimite) {
 		this.cnpjEmpresa = cnpjEmpresa;
 		this.idVaga = idVaga;
 		this.descricao = descricao;

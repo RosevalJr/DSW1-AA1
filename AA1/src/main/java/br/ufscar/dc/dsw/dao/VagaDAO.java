@@ -20,16 +20,17 @@ public class VagaDAO extends GenericDAO{
 		EmpresaDAO empresaDao = new EmpresaDAO();
 		Empresa empresa = empresaDao.getbyCnpj(vaga.getCnpjempresa());
 		
-		String sql = "INSERT INTO VAGA (IDEMPRESA, DESCRICAO, REMUNERACAO, DATALIMITE) VALUES(?, ?, ?, ?)";
+		String sql = "INSERT INTO VAGA (IDEMPRESA, CNPJEMPRESA, DESCRICAO, REMUNERACAO, DATALIMITE) VALUES(?, ?, ?, ?)";
 		try {
 			Connection conn = this.getConnection();
 			PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			
 			statement = conn.prepareStatement(sql);
 			statement.setLong(1, empresa.getId());
-			statement.setString(2, vaga.getDescricao());
-			statement.setFloat(3, vaga.getRemuneracao());
-			statement.setDate(4, vaga.getDatalimite());
+			statement.setLong(2, vaga.getCnpjempresa());
+			statement.setString(3, vaga.getDescricao());
+			statement.setFloat(4, vaga.getRemuneracao());
+			statement.setDate(5, vaga.getDatalimite());
 			statement.executeUpdate();
 			
 			statement.close();

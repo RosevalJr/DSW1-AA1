@@ -115,6 +115,7 @@ public class EmpresasUserController extends HttpServlet {
     
     private void lista(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Vaga> listaVagas = vagaDao.getAll();
+        
         request.setAttribute("listaVagas", listaVagas);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/user/empresa/lista.jsp");
         dispatcher.forward(request, response);
