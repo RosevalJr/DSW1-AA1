@@ -9,9 +9,11 @@ import br.ufscar.dc.dsw.util.Erro;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Locale;
 
@@ -88,13 +90,21 @@ public class EmpresasUserController extends HttpServlet {
 		DateTimeFormatter dateFormatter = 
 		        new DateTimeFormatterBuilder()
 		            .parseCaseInsensitive()
-		            .appendPattern("uuuu/MM/dd")
+		            .appendPattern("yyyy/MM/dd")
 		            .toFormatter(Locale.ENGLISH);
 		    
-		LocalDate date = LocalDate.parse(request.getParameter("datalimite"), dateFormatter);
-		dataLimite = Date.valueOf(date);
-		Float remuneracao = null;
+		try {
+			LocalDate date = LocalDate.parse(request.getParameter("datalimite"), dateFormatter);
+			dataLimite = Date.valueOf(date);
+		} catch (DateTimeParseException e) {
+			Erro erros = new Erro();
+			erros.add("O campo data deve ser preenchido como ano-mês-dia");
+			request.setAttribute("mensagens", erros);
+			RequestDispatcher rd = request.getRequestDispatcher("/erros.jsp");
+			rd.forward(request, response);
+		}
 		
+		float remuneracao = 0;
 		try {
 			remuneracao = Float.parseFloat(request.getParameter("remuneracao"));
 		}catch(NumberFormatException e) {
@@ -114,7 +124,9 @@ public class EmpresasUserController extends HttpServlet {
 	}
     
     private void lista(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Vaga> listaVagas = vagaDao.getAll();
+    	Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogado");
+    	
+    	List<Vaga> listaVagas = vagaDao.getVagasEmpresa(usuario.getId());
         
         request.setAttribute("listaVagas", listaVagas);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/user/empresa/lista.jsp");

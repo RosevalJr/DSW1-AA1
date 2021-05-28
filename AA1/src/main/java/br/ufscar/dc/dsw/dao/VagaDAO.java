@@ -20,17 +20,16 @@ public class VagaDAO extends GenericDAO{
 		EmpresaDAO empresaDao = new EmpresaDAO();
 		Empresa empresa = empresaDao.getbyCnpj(vaga.getCnpjempresa());
 		
-		String sql = "INSERT INTO VAGA (IDEMPRESA, CNPJEMPRESA, DESCRICAO, REMUNERACAO, DATALIMITE) VALUES(?, ?, ?, ?)";
+		String sql = "INSERT INTO VAGA (IDEMPRESA, DESCRICAO, REMUNERACAO, DATALIMITE) VALUES(?, ?, ?, ?)";
 		try {
 			Connection conn = this.getConnection();
 			PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			
 			statement = conn.prepareStatement(sql);
 			statement.setLong(1, empresa.getId());
-			statement.setLong(2, vaga.getCnpjempresa());
-			statement.setString(3, vaga.getDescricao());
-			statement.setFloat(4, vaga.getRemuneracao());
-			statement.setDate(5, vaga.getDatalimite());
+			statement.setString(2, vaga.getDescricao());
+			statement.setFloat(3, vaga.getRemuneracao());
+			statement.setDate(4, vaga.getDatalimite());
 			statement.executeUpdate();
 			
 			statement.close();
@@ -131,6 +130,33 @@ public class VagaDAO extends GenericDAO{
 		}
 		
 		return vaga;
+	}
+	
+	public List<Vaga> getVagasEmpresa(Long idEmpresa){
+		List<Vaga> vagasEmpresa = new ArrayList<Vaga>();
+		
+		String sql = "SELECT * FROM VAGA, EMPRESA WHERE VAGA.IDEMPRESA = EMPRESA.IDUSUARIO AND EMPRESA.IDUSUARIO = ?";
+		
+		try {
+			Connection conn = this.getConnection();
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setLong(1, idEmpresa);
+			ResultSet resultSet = statement.executeQuery();
+			
+			while(resultSet.next()) {
+				Long idVaga = resultSet.getLong("id");
+				Long cnpjEmpresa = resultSet.getLong("cnpj");
+				String descricao = resultSet.getString("descricao");
+				Float remuneracao = resultSet.getFloat("remuneracao");
+				Date dataLimite = resultSet.getDate("datalimite");
+				
+				Vaga vaga = new Vaga(idVaga,cnpjEmpresa, descricao, remuneracao, dataLimite);
+				vagasEmpresa.add(vaga);
+			}
+			
+		} catch (SQLException e) {
+		}
+		return vagasEmpresa;
 	}
 	
 }

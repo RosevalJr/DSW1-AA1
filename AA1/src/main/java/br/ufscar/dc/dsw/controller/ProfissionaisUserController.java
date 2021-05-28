@@ -73,6 +73,9 @@ public class ProfissionaisUserController extends HttpServlet{
     			case "/remocao":
     				remove(request, response);
     				break;
+    			case "/aplicarVaga":
+    				listaVagas(request, response);
+    				break;
                 default:
                     lista(request, response);
                     break;
@@ -152,7 +155,9 @@ public class ProfissionaisUserController extends HttpServlet{
 		response.sendRedirect("lista");
 	}
 
- 
+    private void listaVagas(HttpServletRequest request, HttpServletResponse response) {
+    	
+    }
     
     protected List<Vaga> getVagaById(List<Candidatura> candidaturas){
     	List<Vaga> vagas = new ArrayList<Vaga>();
@@ -165,4 +170,6 @@ public class ProfissionaisUserController extends HttpServlet{
     	return vagas;
     }
 	
+    
+    
 }
