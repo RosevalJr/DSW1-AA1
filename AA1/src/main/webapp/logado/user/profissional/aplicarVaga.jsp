@@ -7,7 +7,7 @@
 <fmt:bundle basename="messages">
 
 	<head>
-		<title><fmt:message key="header.candidatura" /></title>
+		<title><fmt:message key="header.aplicar" /></title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	</head>
@@ -18,7 +18,7 @@
 		%>
 		<div align="center">
 			<h1>
-				<fmt:message key="candidaturas.usuario" /> <c:out value="${usuarioLogado.nome}" />
+				<fmt:message key="vagas.usuario" /> <c:out value="${usuarioLogado.nome}" />
 			</h1>
 			<h2>
 				<a href="${pageContext.request.contextPath}/logout.jsp"> 
@@ -26,8 +26,8 @@
 				</a>
 				<br/>
 				<br/>
-				<a href="/<%=contextPath%>/users/profissionais/aplicarVaga"> 
-					<fmt:message key="candidatura.aplicar" />
+				<a href="/<%=contextPath%>/users/profissionais"> 
+					<fmt:message key="vagas.inscritas" />
 				</a> 
 			</h2>
 			<br/>
@@ -44,8 +44,8 @@
 				</tr>
 				<c:forEach var="vaga" items="${requestScope.listaVagas}">
 					<tr>
-						<td><c:out value="${vaga.idvaga}" /></td>
 						<td><c:out value="${vaga.cnpjempresa}" /></td>
+						<td><c:out value="${vaga.idvaga}" /></td>
 						<td><c:out value="${vaga.descricao}" /></td>
 						<td><c:out value="${vaga.remuneracao}" /></td>
 						<td><c:out value="${vaga.datalimite}" /></td>
@@ -57,6 +57,10 @@
 								<td><fmt:message key="vaga.aberta.false" /></td>
 							</c:otherwise>
 						</c:choose>
+						<td><a
+							href="/<%= contextPath %>/users/profissionais/candidatar?id=<c:out value='${vaga.cnpjempresa}' />">
+								<fmt:message key="vaga.candidatar" />
+						</a> 
 					</tr>
 				</c:forEach>
 			</table>

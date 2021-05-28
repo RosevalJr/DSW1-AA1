@@ -135,7 +135,6 @@ public class ProfissionaisUserController extends HttpServlet{
     
     private void lista(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogado");
-    	
     	Long idUsuario = usuario.getId();
     	
     	List<Candidatura> listaCandidaturas = candidaturaDao.getCandidaturasByPessoa(idUsuario);
@@ -155,7 +154,26 @@ public class ProfissionaisUserController extends HttpServlet{
 		response.sendRedirect("lista");
 	}
 
-    private void listaVagas(HttpServletRequest request, HttpServletResponse response) {
+    private void listaVagas(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogado");
+    	Long idUsuario = usuario.getId();
+    	
+    	VagaDAO vagasDao = new VagaDAO();
+    	
+    	List<Vaga> vagasAbertas = vagasDao.getAllAberta();
+    	List<Candidatura> candidaturas = candidaturaDao.getCandidaturasByPessoa(idUsuario);
+    	
+    	System.out.println(vagasAbertas.size());
+    	
+    	for(Candidatura c : candidaturas) {
+    		vagasAbertas.removeIf(n -> (n.getCnpjempresa() == c.getIdVaga()));
+    	}
+    	
+    	System.out.println(vagasAbertas.size());
+    	
+    	request.setAttribute("listaVagas", vagasAbertas);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/user/profissional/aplicarVaga.jsp");
+        dispatcher.forward(request, response);
     	
     }
     
