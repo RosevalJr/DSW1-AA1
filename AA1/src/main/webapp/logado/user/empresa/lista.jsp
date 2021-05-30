@@ -57,6 +57,9 @@
 								<td><fmt:message key="vaga.aberta.false" /></td>
 							</c:otherwise>
 						</c:choose>
+						<td> <a href="/<%=contextPath%>/users/empresas/listarCandidaturas?idvaga=<c:out value="${vaga.idvaga}" />"> 
+					Visualizar Candidaturas
+				</a>  </td>
 					</tr>
 				</c:forEach>
 			</table>

@@ -103,7 +103,7 @@ public class UsuarioDAO extends GenericDAO{
     public Usuario get(Long id) {
         Usuario usuario = null;
 
-        String sql = "SELECT * from Usuario WHERE id = ?";
+        String sql = "SELECT * from USUARIO WHERE id = ?";
 
         try {
             Connection conn = this.getConnection();

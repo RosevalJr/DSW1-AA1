@@ -44,21 +44,13 @@
 				</tr>
 				<c:forEach var="vaga" items="${requestScope.listaVagas}">
 					<tr>
-						<td><c:out value="${vaga.cnpjempresa}" /></td>
 						<td><c:out value="${vaga.idvaga}" /></td>
+						<td><c:out value="${vaga.cnpjempresa}" /></td>
 						<td><c:out value="${vaga.descricao}" /></td>
 						<td><c:out value="${vaga.remuneracao}" /></td>
 						<td><c:out value="${vaga.datalimite}" /></td>
-						<c:choose>
-							<c:when test="${vaga.aberta == 'true'}">
-								<td><fmt:message key="vaga.aberta.true" /></td>
-							</c:when>
-							<c:otherwise>
-								<td><fmt:message key="vaga.aberta.false" /></td>
-							</c:otherwise>
-						</c:choose>
 						<td><a
-							href="/<%= contextPath %>/users/profissionais/candidatar?id=<c:out value='${vaga.cnpjempresa}' />">
+							href="/<%= contextPath %>/users/profissionais/candidatar?id=<c:out value='${vaga.idvaga}' />">
 								<fmt:message key="vaga.candidatar" />
 						</a> 
 					</tr>

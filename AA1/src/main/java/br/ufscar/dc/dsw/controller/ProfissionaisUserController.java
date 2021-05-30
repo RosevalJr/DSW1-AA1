@@ -4,11 +4,18 @@ import br.ufscar.dc.dsw.dao.CandidaturaDAO;
 import br.ufscar.dc.dsw.dao.ProfissionalDAO;
 import br.ufscar.dc.dsw.dao.VagaDAO;
 import br.ufscar.dc.dsw.domain.Candidatura;
+import br.ufscar.dc.dsw.domain.Empresa;
 import br.ufscar.dc.dsw.domain.Profissional;
 import br.ufscar.dc.dsw.domain.Usuario;
 import br.ufscar.dc.dsw.domain.Vaga;
 import br.ufscar.dc.dsw.util.Erro;
 
+import static br.ufscar.dc.dsw.Constants.MAX_FILE_SIZE;
+import static br.ufscar.dc.dsw.Constants.MAX_REQUEST_SIZE;
+import static br.ufscar.dc.dsw.Constants.MEMORY_THRESHOLD;
+import static br.ufscar.dc.dsw.Constants.UPLOAD_DIRECTORY;
+
+import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.ParseException;
@@ -21,6 +28,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 @WebServlet(urlPatterns = "/users/profissionais/*")
 public class ProfissionaisUserController extends HttpServlet{
@@ -76,6 +87,12 @@ public class ProfissionaisUserController extends HttpServlet{
     			case "/aplicarVaga":
     				listaVagas(request, response);
     				break;
+    			case "/candidatar":
+    				apresentaFormFile(request, response);
+    				break;
+    			case "/insereCandidatura":
+    				insere(request, response);
+    				break;
                 default:
                     lista(request, response);
                     break;
@@ -87,49 +104,52 @@ public class ProfissionaisUserController extends HttpServlet{
     
     private void insere(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+    	Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogado");
+    	Long idUsuario = usuario.getId();
+    	Vaga vaga = (Vaga) request.getSession().getAttribute("ultimaVagaCandidatada");
+		String fileName = null;
 		
-		Long cpf;
-		
-		try {
-			cpf = Long.parseLong(request.getParameter("cpf"));
-		} catch(NumberFormatException nfe) {
-			Erro erros = new Erro();
-			erros.add("O campo cpf deve ser apenas comoposto por números");
-			request.setAttribute("mensagens", erros);
-			RequestDispatcher rd = request.getRequestDispatcher("/erros.jsp");
-			rd.forward(request, response);
-			return;
-		}
-		String nome = request.getParameter("nome");
-		String senha = request.getParameter("senha");
-		String email = request.getParameter("email");
-		String telefone = request.getParameter("telefone");
-		String sexo = request.getParameter("sexo");
-		
-		SimpleDateFormat formato;
-		java.util.Date nascimento;
-		try {
-			formato = new SimpleDateFormat("yyyy-MM-dd");
-			nascimento = formato.parse(request.getParameter("nascimento"));
-		} catch(ParseException pe) {
-			try {
-				formato = new SimpleDateFormat("yyyy/MM/dd");
-				nascimento = formato.parse(request.getParameter("nascimento"));
-			} catch(ParseException pe2) {
-				Erro erros = new Erro();
-				erros.add("Data deve ser inserida como ano/mês/dia ou ano-mês-dia");
-				request.setAttribute("mensagens", erros);
-				RequestDispatcher rd = request.getRequestDispatcher("/erros.jsp");
-				rd.forward(request, response);
-				return;
+		if (ServletFileUpload.isMultipartContent(request)) {
+
+			DiskFileItemFactory factory = new DiskFileItemFactory();
+			factory.setSizeThreshold(MEMORY_THRESHOLD);
+			factory.setRepository(new File(System.getProperty("java.io.tmpdir")));
+
+			ServletFileUpload upload = new ServletFileUpload(factory);
+			upload.setFileSizeMax(MAX_FILE_SIZE);
+			upload.setSizeMax(MAX_REQUEST_SIZE);
+			String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIRECTORY;
+			System.out.println(uploadPath);
+			File uploadDir = new File(uploadPath);
+			if (!uploadDir.exists()) {
+				uploadDir.mkdir();
 			}
+
+			try {
+				List<FileItem> formItems = upload.parseRequest(request);
+
+				if (formItems != null && formItems.size() > 0) {
+					for (FileItem item : formItems) {
+						if (!item.isFormField()) {
+							fileName = new File(item.getName()).getName();
+							String filePath = uploadPath + File.separator + fileName;
+							File storeFile = new File(filePath);
+							item.write(storeFile);
+							request.setAttribute("message", "File " + fileName + " has uploaded successfully!");
+						}
+					}
+				}
+			} catch (Exception ex) {
+				request.setAttribute("message", "There was an error: " + ex.getMessage());
+			}
+			CandidaturaDAO candidaturaDao = new CandidaturaDAO();
+			System.out.println(vaga.getIdvaga());
+					System.out.println(idUsuario);
+			System.out.println(fileName);
+			Candidatura candidatura = new Candidatura(vaga.getIdvaga(), idUsuario, fileName);
+			candidaturaDao.insert(candidatura);
+			response.sendRedirect("lista");
 		}
-		Date nasc = new Date(nascimento.getTime());
-		Long id = (long) 0;
-		Profissional profissional = new Profissional(id, cpf, nome, senha, email, telefone, sexo, nasc);
-		
-		dao.insert(profissional);
-		response.sendRedirect("lista");
     }
     
     
@@ -138,9 +158,8 @@ public class ProfissionaisUserController extends HttpServlet{
     	Long idUsuario = usuario.getId();
     	
     	List<Candidatura> listaCandidaturas = candidaturaDao.getCandidaturasByPessoa(idUsuario);
-
-    	List<Vaga> listaVagas = getVagaById(listaCandidaturas);
-        request.setAttribute("listaVagas", listaVagas);
+    	
+    	request.setAttribute("listaCandidaturas", listaCandidaturas);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/user/profissional/lista.jsp");
         dispatcher.forward(request, response);
     }
@@ -166,10 +185,9 @@ public class ProfissionaisUserController extends HttpServlet{
     	System.out.println(vagasAbertas.size());
     	
     	for(Candidatura c : candidaturas) {
-    		vagasAbertas.removeIf(n -> (n.getCnpjempresa() == c.getIdVaga()));
+    		vagasAbertas.removeIf(n -> (n.getIdvaga() == c.getIdvaga()));
     	}
     	
-    	System.out.println(vagasAbertas.size());
     	
     	request.setAttribute("listaVagas", vagasAbertas);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/user/profissional/aplicarVaga.jsp");
@@ -177,17 +195,16 @@ public class ProfissionaisUserController extends HttpServlet{
     	
     }
     
-    protected List<Vaga> getVagaById(List<Candidatura> candidaturas){
-    	List<Vaga> vagas = new ArrayList<Vaga>();
-    	VagaDAO vagasDao = new VagaDAO();
-    	
-    	for(Candidatura c : candidaturas) {
-    		vagas.add(vagasDao.getVaga(c.getIdVaga()));
-    	}
-    	
-    	return vagas;
-    }
-	
-    
+	private void apresentaFormFile(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		Long idVaga = Long.parseLong(request.getParameter("id"));
+		VagaDAO vagasDao = new VagaDAO();
+		Vaga vaga = vagasDao.getVaga(idVaga);
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/user/profissional/formularioFile.jsp");
+		request.getSession().setAttribute("ultimaVagaCandidatada", vaga);
+		request.setAttribute("vaga", vaga);
+		dispatcher.forward(request, response);
+	}
     
 }

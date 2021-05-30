@@ -86,7 +86,7 @@ public class VagaDAO extends GenericDAO{
                 String descricao = resultSet.getString("descricao");
                 float remuneracao = resultSet.getFloat("remuneracao");
                 Date dataLimite = resultSet.getDate("datalimite");
-                Vaga vaga = new Vaga(cnpj,id , descricao, remuneracao, dataLimite);
+                Vaga vaga = new Vaga(id ,cnpj  , descricao, remuneracao, dataLimite);
                 if(vaga.getAberta()) // Caso for aberta adiciona a vaga na lista.
                 	listaVagasAbertas.add(vaga);
             }

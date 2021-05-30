@@ -1,8 +1,14 @@
 package br.ufscar.dc.dsw.controller;
 
+import br.ufscar.dc.dsw.EmailService;
+import br.ufscar.dc.dsw.dao.CandidaturaDAO;
 import br.ufscar.dc.dsw.dao.EmpresaDAO;
+import br.ufscar.dc.dsw.dao.ProfissionalDAO;
+import br.ufscar.dc.dsw.dao.UsuarioDAO;
 import br.ufscar.dc.dsw.dao.VagaDAO;
+import br.ufscar.dc.dsw.domain.Candidatura;
 import br.ufscar.dc.dsw.domain.Empresa;
+import br.ufscar.dc.dsw.domain.Profissional;
 import br.ufscar.dc.dsw.domain.Usuario;
 import br.ufscar.dc.dsw.domain.Vaga;
 import br.ufscar.dc.dsw.util.Erro;
@@ -23,6 +29,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import javax.mail.internet.InternetAddress;
+
+
 @WebServlet(urlPatterns = "/users/empresas/*")
 public class EmpresasUserController extends HttpServlet {
 	
@@ -30,11 +41,18 @@ public class EmpresasUserController extends HttpServlet {
 
     private EmpresaDAO empresaDao;
     private VagaDAO vagaDao;
+    private CandidaturaDAO candidaturaDao;
+    private UsuarioDAO usuarioDao;
+    private ProfissionalDAO profissionalDao;
     
     @Override
     public void init() {
+    	usuarioDao = new UsuarioDAO();
         empresaDao = new EmpresaDAO();
         vagaDao = new VagaDAO();
+        candidaturaDao = new CandidaturaDAO();
+        profissionalDao = new ProfissionalDAO();
+        
     }
 
     @Override
@@ -73,6 +91,15 @@ public class EmpresasUserController extends HttpServlet {
     			case "/cadastroVaga":
     				apresentaFormCadastro(request,response);
     				break;
+    			case "/listarCandidaturas":
+    				listaCandidaturas(request, response);
+    				break;
+    			case "/avaliando":
+    				apresentaFormAvaliacao(request, response);
+    				break;
+    			case "/avaliaCandidatura":
+    				avaliaCandidatura(request, response);
+    				break;
                 default:
                     lista(request, response);
                     break;
@@ -81,6 +108,60 @@ public class EmpresasUserController extends HttpServlet {
             throw new ServletException(e);
         }
     }
+    
+    private void avaliaCandidatura(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, UnsupportedEncodingException {
+       	Long idVaga = Long.parseLong(request.getParameter("idVaga"));
+    	Long idProfissional = Long.parseLong(request.getParameter("idProfissional"));
+    	Usuario usuario = usuarioDao.get(idProfissional);
+    	
+    	EmailService service = new EmailService();
+    	
+    	InternetAddress from = new InternetAddress("aa1seedsw1@gmail.com", "Fulano");
+    	InternetAddress to = new InternetAddress(usuario.getLogin(), "Beltrano");
+    	
+    	if(request.getParameter("entrevista") != null) {
+    		String link = request.getParameter("link");
+    		candidaturaDao.update(idVaga, idProfissional, "ENTREVISTA");
+    		
+        	String subject = "ENTREVISTA - A11";
+        	String body = "Aqui esta o link para a entrevista: " + link;
+        	
+    		service.send(from, to, subject, body);
+    	}
+    	else {
+    		candidaturaDao.update(idVaga, idProfissional, "NÃO SELECIONADO");
+        	String subject = "NÃO SELECIONADO - A11";
+        	String body = "Infelizmente você não foi selecionado!";
+        	
+    		service.send(from, to, subject, body);
+    	}
+    	response.sendRedirect("lista");
+    }
+    
+    private void listaCandidaturas(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	Long idvaga = Long.parseLong(request.getParameter("idvaga"));
+    	
+    	List<Candidatura> listaCandidaturas = candidaturaDao.getCandidaturasByVaga(idvaga);
+    	
+    	request.setAttribute("listaCandidaturas", listaCandidaturas);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/user/empresa/listaCandidaturas.jsp");
+        dispatcher.forward(request, response);
+    }
+    
+    private void apresentaFormAvaliacao(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	Long idvaga = Long.parseLong(request.getParameter("idvaga"));
+    	Long idpessoa = Long.parseLong(request.getParameter("idpessoa"));
+    	
+    	Candidatura candidatura = candidaturaDao.getCandidatura(idvaga, idpessoa);
+    	Profissional profissional = profissionalDao.get(idpessoa);
+    	
+    	// Informações da candidatura e do profissional.
+    	request.setAttribute("candidatura", candidatura);
+    	request.setAttribute("profissional", profissional);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/user/empresa/listaAvaliacaoCandidatura.jsp");
+        dispatcher.forward(request, response);
+    }
+    
 	private void insere(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogado");

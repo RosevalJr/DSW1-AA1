@@ -3,17 +3,18 @@
 <%@ page isELIgnored="false"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <fmt:bundle basename="messages">
-
-	<head>
+<head>
 		<title><fmt:message key="header.candidatura" /></title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	</head>
+</head>
 
-	<body>
-		<%
+<body>
+	<%
 			String contextPath = request.getContextPath().replace("/", "");
 		%>
 		<div align="center">
@@ -26,13 +27,9 @@
 				</a>
 				<br/>
 				<br/>
-				<a href="/<%=contextPath%>/users/profissionais/aplicarVaga"> 
-					<fmt:message key="candidatura.aplicar" />
-				</a> 
 			</h2>
-			<br/>
-		</div>
-		<div align="center">
+
+	<div align="center">
 			<table border="1">
 				<tr>
 					<th><fmt:message key="vaga.id" /></th>
@@ -40,25 +37,33 @@
 					<th><fmt:message key="vaga.descricao" /></th>
 					<th><fmt:message key="vaga.remuneracao" /></th>
 					<th><fmt:message key="vaga.datalimite" /></th>
-					<th>Status</th>
-					<th>Curriculo</th>
+					<th><fmt:message key="vaga.aberta" /></th>
 				</tr>
-				<c:forEach var="candidatura" items="${requestScope.listaCandidaturas}">
 					<tr>
-						<td><c:out value="${candidatura.idvaga}" /></td>
-						<td><c:out value="${candidatura.cnpjempresa}" /></td>
-						<td><c:out value="${candidatura.descricao}" /></td>
-						<td><c:out value="${candidatura.remuneracao}" /></td>
-						<td><c:out value="${candidatura.datalimite}" /></td>
-						<td><c:out value="${candidatura.status}" /></td>
-						<td><a href="/<%=contextPath%>/curriculo/<c:out value="${candidatura.curriculo}" />"> 
-					<c:out value="${candidatura.curriculo}" />
-				</a> </td>
+						<td><c:out value="${vaga.idvaga}" /></td>
+						<td><c:out value="${vaga.cnpjempresa}" /></td>
+						<td><c:out value="${vaga.descricao}" /></td>
+						<td><c:out value="${vaga.remuneracao}" /></td>
+						<td><c:out value="${vaga.datalimite}" /></td>
+						<c:choose>
+							<c:when test="${vaga.aberta == 'true'}">
+								<td><fmt:message key="vaga.aberta.true" /></td>
+							</c:when>
+							<c:otherwise>
+								<td><fmt:message key="vaga.aberta.false" /></td>
+							</c:otherwise>
+						</c:choose>
 					</tr>
-				</c:forEach>
 			</table>
 		</div>
-	</body>
-</fmt:bundle>
+				<br/>
+		</div>
+	<div>Upload de Curriculo</div>
+	<form method="post" action="insereCandidatura" enctype="multipart/form-data">
+		Escolha um arquivo: <input type="file" name="uploadFile" />
+		<input type="submit" value="Upload" />
+	</form>
 
+</body>
+</fmt:bundle>
 </html>
