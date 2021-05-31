@@ -15,6 +15,8 @@ import br.ufscar.dc.dsw.util.Erro;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -29,7 +31,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.io.File;
 import java.io.UnsupportedEncodingException;
 import javax.mail.internet.InternetAddress;
 
@@ -165,24 +166,28 @@ public class EmpresasUserController extends HttpServlet {
 	private void insere(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogado");
-		Date dataLimite = null;
 		
-		DateTimeFormatter dateFormatter = 
-		        new DateTimeFormatterBuilder()
-		            .parseCaseInsensitive()
-		            .appendPattern("yyyy/MM/dd")
-		            .toFormatter(Locale.ENGLISH);
-		    
+		SimpleDateFormat formato;
+		java.util.Date dateLimite;
 		try {
-			LocalDate date = LocalDate.parse(request.getParameter("datalimite"), dateFormatter);
-			dataLimite = Date.valueOf(date);
-		} catch (DateTimeParseException e) {
-			Erro erros = new Erro();
-			erros.add("O campo data deve ser preenchido como ano-mês-dia");
-			request.setAttribute("mensagens", erros);
-			RequestDispatcher rd = request.getRequestDispatcher("/erros.jsp");
-			rd.forward(request, response);
+			formato = new SimpleDateFormat("yyyy-MM-dd");
+			dateLimite = formato.parse(request.getParameter("datalimite"));
+		} catch(ParseException pe) {
+			try {
+				formato = new SimpleDateFormat("yyyy/MM/dd");
+				dateLimite = formato.parse(request.getParameter("datalimite"));
+			} catch(ParseException pe2) {
+				Erro erros = new Erro();
+				erros.add("Data deve ser inserida como ano/mês/dia ou ano-mês-dia");
+				request.setAttribute("mensagens", erros);
+				RequestDispatcher rd = request.getRequestDispatcher("/erros.jsp");
+				rd.forward(request, response);
+				return;
+			}
 		}
+		Date dataLimite = new Date(dateLimite.getTime());
+		
+
 		
 		float remuneracao = 0;
 		try {
@@ -193,6 +198,7 @@ public class EmpresasUserController extends HttpServlet {
 			request.setAttribute("mensagens", erros);
 			RequestDispatcher rd = request.getRequestDispatcher("/erros.jsp");
 			rd.forward(request, response);
+			return;
 		}
 		
 		String descricao = request.getParameter("descricao");

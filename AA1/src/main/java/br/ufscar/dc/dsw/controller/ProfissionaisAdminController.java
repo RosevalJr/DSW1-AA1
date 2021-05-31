@@ -127,7 +127,18 @@ public class ProfissionaisAdminController extends HttpServlet {
 		Long id = (long) 0;
 		Profissional profissional = new Profissional(id, cpf, nome, senha, email, telefone, sexo, nasc);
 		
+		try {
 		dao.insert(profissional);
+		}
+		catch(RuntimeException e) {
+			Erro erros = new Erro();
+			erros.add("Esse CPF já esta cadastrado no sistema.");
+			erros.add("Por favor insira outro CPF ou procure pelo profissional ja cadastrado.");
+			request.setAttribute("mensagens", erros);
+			RequestDispatcher rd = request.getRequestDispatcher("/erros.jsp");
+			rd.forward(request, response);
+			return;
+		}
 		response.sendRedirect("lista");
     }
     
@@ -207,8 +218,19 @@ public class ProfissionaisAdminController extends HttpServlet {
 		Date nasc = new Date(nascimento.getTime());
 		
 		Profissional profissional = new Profissional(id, cpf, nome, senha, email, telefone, sexo, nasc);
-	
+	try {
 		dao.update(profissional);
+	}
+	catch(RuntimeException e) {
+		Erro erros = new Erro();
+		erros.add("Esse CPF já esta cadastrado no sistema.");
+		erros.add("Por favor insira outro CPF ou procure pelo profissional ja cadastrado.");
+		request.setAttribute("mensagens", erros);
+		RequestDispatcher rd = request.getRequestDispatcher("/erros.jsp");
+		rd.forward(request, response);
+		return;
+	}
+		
 		response.sendRedirect("lista");
 	} 
 }

@@ -5,7 +5,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <html>
 <fmt:bundle basename="messages">
-
 	<head>
 		<title><fmt:message key="header.candidatura" /></title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -31,6 +30,7 @@
 				</a> 
 			</h2>
 			<br/>
+			<h3><fmt:message key="candidatura.listar" /></h3>
 		</div>
 		<div align="center">
 			<table border="1">
@@ -40,8 +40,8 @@
 					<th><fmt:message key="vaga.descricao" /></th>
 					<th><fmt:message key="vaga.remuneracao" /></th>
 					<th><fmt:message key="vaga.datalimite" /></th>
-					<th>Status</th>
-					<th>Curriculo</th>
+					<th><fmt:message key="vaga.status" /></th>
+					<th><fmt:message key="vaga.curriculo" /></th>
 				</tr>
 				<c:forEach var="candidatura" items="${requestScope.listaCandidaturas}">
 					<tr>

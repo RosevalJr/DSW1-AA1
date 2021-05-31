@@ -8,7 +8,7 @@
 <html>
 <fmt:bundle basename="messages">
 <head>
-		<title><fmt:message key="header.candidatura" /></title>
+		<title><fmt:message key="header.aplicarCandidatura" /></title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -19,9 +19,13 @@
 		%>
 		<div align="center">
 			<h1>
-				<fmt:message key="candidaturas.usuario" /> <c:out value="${usuarioLogado.nome}" />
+				<fmt:message key="candidaturaVaga.usuario" /> <c:out value="${usuarioLogado.nome}" />
 			</h1>
 			<h2>
+				<a href="#" onclick="history.go(-1)"> 
+					<fmt:message key="voltar" />
+				</a> 		
+				&nbsp;&nbsp;&nbsp;
 				<a href="${pageContext.request.contextPath}/logout.jsp"> 
 					<fmt:message key="sair.link" />
 				</a>
@@ -55,14 +59,14 @@
 						</c:choose>
 					</tr>
 			</table>
-		</div>
-				<br/>
-		</div>
-	<div>Upload de Curriculo</div>
+			<br/>
+				<h3><fmt:message key="candidatura.upload" /></h3>
 	<form method="post" action="insereCandidatura" enctype="multipart/form-data">
-		Escolha um arquivo: <input type="file" name="uploadFile" />
-		<input type="submit" value="Upload" />
+		<fmt:message key="candidatura.escolhaArquivo" /> <input type="file" name="uploadFile" />
+		<input type="submit" value="<fmt:message key="enviar" />" />
 	</form>
+		</div>
+		</div>
 
 </body>
 </fmt:bundle>

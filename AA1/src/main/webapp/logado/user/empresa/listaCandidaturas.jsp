@@ -7,7 +7,7 @@
 <fmt:bundle basename="messages">
 
 	<head>
-		<title><fmt:message key="header.vaga" /></title>
+		<title><fmt:message key="header.candidatura" /></title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	</head>
@@ -18,7 +18,7 @@
 		%>
 		<div align="center">
 			<h1>
-				<fmt:message key="vaga.empresa" /> <c:out value="${usuarioLogado.nome}" />
+				<fmt:message key="candidaturas.usuario" /> <c:out value="${usuarioLogado.nome}" />
 			</h1>
 			<h2>
 				<a href="${pageContext.request.contextPath}/logout.jsp"> 
@@ -26,20 +26,23 @@
 				</a>
 				<br/>
 				<br/>
+				<a href="${pageContext.request.contextPath}/users/empresas"> 
+					<fmt:message key="vaga.listar"/>
+				</a>
 			</h2>
 			<br/>
+			<h3><fmt:message key="candidatura.listar" /></h3>
 		</div>
 		<div align="center">
 			<table border="1">
 				<tr>
-					<th>IDVAGA</th>
-					<th>IDPESSOA</th>
-					<th>CNPJ EMPRESA</th>
-					<th>DESCRICAO</th>
-					<th>REMUNERAÇÃO</th>
-					<th>DATA LIMITE</th>
-					<th>STATUS</th>
-					<th>CURRICULO</th>
+					<th><fmt:message key="candidatura.idVaga" /></th>
+					<th><fmt:message key="candidatura.idPessoa" /></th>
+					<th><fmt:message key="vaga.descricao" /></th>
+					<th><fmt:message key="vaga.remuneracao" /></th>
+					<th><fmt:message key="vaga.datalimite" /></th>
+					<th><fmt:message key="vaga.status" /></th>
+					<th><fmt:message key="vaga.curriculo" /></th>
 				</tr>
 				<c:forEach var="candidatura" items="${requestScope.listaCandidaturas}">
 					<tr>

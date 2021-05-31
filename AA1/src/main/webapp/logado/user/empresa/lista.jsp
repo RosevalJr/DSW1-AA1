@@ -31,12 +31,12 @@
 				</a> 
 			</h2>
 			<br/>
+			<h3><fmt:message key="vaga.listar"/> </h3>
 		</div>
 		<div align="center">
 			<table border="1">
 				<tr>
 					<th><fmt:message key="vaga.id" /></th>
-					<th><fmt:message key="vaga.cnpj" /></th>
 					<th><fmt:message key="vaga.descricao" /></th>
 					<th><fmt:message key="vaga.remuneracao" /></th>
 					<th><fmt:message key="vaga.datalimite" /></th>
@@ -45,7 +45,6 @@
 				<c:forEach var="vaga" items="${requestScope.listaVagas}">
 					<tr>
 						<td><c:out value="${vaga.idvaga}" /></td>
-						<td><c:out value="${vaga.cnpjempresa}" /></td>
 						<td><c:out value="${vaga.descricao}" /></td>
 						<td><c:out value="${vaga.remuneracao}" /></td>
 						<td><c:out value="${vaga.datalimite}" /></td>
@@ -56,9 +55,9 @@
 							<c:otherwise>
 								<td><fmt:message key="vaga.aberta.false" /></td>
 							</c:otherwise>
-						</c:choose>
+						</c:choose> 
 						<td> <a href="/<%=contextPath%>/users/empresas/listarCandidaturas?idvaga=<c:out value="${vaga.idvaga}" />"> 
-					Visualizar Candidaturas
+					<fmt:message key="candidatura.visualizar" />
 				</a>  </td>
 					</tr>
 				</c:forEach>

@@ -32,18 +32,11 @@
 	</c:if>
 	
 	<h2>
-		<a href="/<%=contextPath%>/empresas"> 
-			<fmt:message key="empresa.entidade" />
-		</a> 
 		
-		<a href="/<%=contextPath%>/usuarios"> 
-			<fmt:message key="usuario.entidade" />
-		</a> 
-		
-		<a href="/<%=contextPath%>/profissionais"> 
-			<fmt:message key="profissional.entidade" />
-		</a> 
-		
+		<a href="#" onclick="history.go(-1)"> 
+			<fmt:message key="voltar" />
+		</a> 		
+		&nbsp;&nbsp;&nbsp;
 		<a href="/<%=contextPath%>/logout.jsp"> 
 			<fmt:message key="sair.link" />
 		</a> 

@@ -89,7 +89,7 @@ public class EmpresasAdminController extends HttpServlet {
 		}
 		catch (NumberFormatException nfe) {
 			Erro erros = new Erro();
-			erros.add("O campo cnpj deve ser apenas comoposto por números");
+			erros.add("O campo CNPJ deve ser apenas composto por números");
 			request.setAttribute("mensagens", erros);
 			RequestDispatcher rd = request.getRequestDispatcher("/erros.jsp");
 			rd.forward(request, response);
@@ -103,7 +103,18 @@ public class EmpresasAdminController extends HttpServlet {
 		Long id = (long) 0;
 		Empresa empresa= new Empresa(id ,cnpj, nome, senha, email, descricao, cidade);
 
-		dao.insert(empresa);
+		try {
+			dao.insert(empresa);
+		}
+		catch(RuntimeException e) {
+			Erro erros = new Erro();
+			erros.add("Esse CPNJ já esta cadastrado no sistema.");
+			erros.add("Por favor insira outro CNPJ ou procure pela empresa ja cadastrada.");
+			request.setAttribute("mensagens", erros);
+			RequestDispatcher rd = request.getRequestDispatcher("/erros.jsp");
+			rd.forward(request, response);
+			return;
+		}
 		response.sendRedirect("lista");
 	}
     
@@ -139,8 +150,8 @@ public class EmpresasAdminController extends HttpServlet {
 	
 	private void atualize(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		request.setCharacterEncoding("UTF-8");
+		
 		Long id = Long.parseLong(request.getParameter("id"));
 		Long cnpj;
 		
@@ -149,7 +160,7 @@ public class EmpresasAdminController extends HttpServlet {
 		}
 		catch (NumberFormatException nfe) {
 			Erro erros = new Erro();
-			erros.add("O campo cnpj deve ser apenas comoposto por números");
+			erros.add("O campo CNPJ deve ser apenas comoposto por números.");
 			request.setAttribute("mensagens", erros);
 			RequestDispatcher rd = request.getRequestDispatcher("/erros.jsp");
 			rd.forward(request, response);
@@ -162,8 +173,18 @@ public class EmpresasAdminController extends HttpServlet {
 		String cidade = request.getParameter("cidade");
 		
 		Empresa empresa= new Empresa(id, cnpj, nome, senha, email, descricao, cidade);
-
+	try{
 		dao.update(empresa);
+	}
+	catch(RuntimeException e) {
+		Erro erros = new Erro();
+		erros.add("Esse CPNJ já esta cadastrado no sistema.");
+		erros.add("Por favor insira outro CNPJ ou procure pela empresa ja cadastrada.");
+		request.setAttribute("mensagens", erros);
+		RequestDispatcher rd = request.getRequestDispatcher("/erros.jsp");
+		rd.forward(request, response);
+		return;
+	}
 		response.sendRedirect("lista");
 	}
 

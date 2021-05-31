@@ -4,7 +4,6 @@ import br.ufscar.dc.dsw.dao.CandidaturaDAO;
 import br.ufscar.dc.dsw.dao.ProfissionalDAO;
 import br.ufscar.dc.dsw.dao.VagaDAO;
 import br.ufscar.dc.dsw.domain.Candidatura;
-import br.ufscar.dc.dsw.domain.Empresa;
 import br.ufscar.dc.dsw.domain.Profissional;
 import br.ufscar.dc.dsw.domain.Usuario;
 import br.ufscar.dc.dsw.domain.Vaga;
@@ -119,7 +118,6 @@ public class ProfissionaisUserController extends HttpServlet{
 			upload.setFileSizeMax(MAX_FILE_SIZE);
 			upload.setSizeMax(MAX_REQUEST_SIZE);
 			String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIRECTORY;
-			System.out.println(uploadPath);
 			File uploadDir = new File(uploadPath);
 			if (!uploadDir.exists()) {
 				uploadDir.mkdir();
@@ -140,12 +138,14 @@ public class ProfissionaisUserController extends HttpServlet{
 					}
 				}
 			} catch (Exception ex) {
-				request.setAttribute("message", "There was an error: " + ex.getMessage());
+				Erro erros = new Erro();
+				erros.add("Ocorreu um erro ao enviar o email");
+				request.setAttribute("mensagens", erros);
+				RequestDispatcher rd = request.getRequestDispatcher("/erros.jsp");
+				rd.forward(request, response);
+				return;
 			}
 			CandidaturaDAO candidaturaDao = new CandidaturaDAO();
-			System.out.println(vaga.getIdvaga());
-					System.out.println(idUsuario);
-			System.out.println(fileName);
 			Candidatura candidatura = new Candidatura(vaga.getIdvaga(), idUsuario, fileName);
 			candidaturaDao.insert(candidatura);
 			response.sendRedirect("lista");
@@ -168,7 +168,7 @@ public class ProfissionaisUserController extends HttpServlet{
 		Long id = Long.parseLong(request.getParameter("id"));
 
 		Profissional profissional = new Profissional(id);
-		System.out.println(id);
+
 		dao.delete(profissional);
 		response.sendRedirect("lista");
 	}

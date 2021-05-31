@@ -7,7 +7,7 @@
 <fmt:bundle basename="messages">
 
 	<head>
-		<title><fmt:message key="header.vaga" /></title>
+		<title><fmt:message key="header.candidatura" /></title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	</head>
@@ -18,7 +18,7 @@
 		%>
 		<div align="center">
 			<h1>
-				<fmt:message key="vaga.empresa" /> <c:out value="${usuarioLogado.nome}" />
+				<fmt:message key="candidaturas.usuario" /> <c:out value="${profissional.nome}" />
 			</h1>
 			<h2>
 				<a href="${pageContext.request.contextPath}/logout.jsp"> 
@@ -26,19 +26,22 @@
 				</a>
 				<br/>
 				<br/>
+				<a href="#" onclick="history.go(-1)"> 
+				<fmt:message key="voltar" />
+				</a> 
 			</h2>
 			<br/>
 		</div>
 		<div align="center">
-			<h2> Informaçõs do Profissional </h2>
+			<h2> <fmt:message key="profissional.info" /> </h2>
 			<table border="1">
 				<tr>
-					<th>IDPROFISSIONAL</th>
-					<th>NOME</th>
-					<th>CPF</th>
-					<th>TELEFONE</th>
-					<th>SEXO</th>
-					<th>NASCIMENTO</th>
+					<th><fmt:message key="profissional.id" /></th>
+					<th><fmt:message key="profissional.nome" /></th>
+					<th><fmt:message key="profissional.cpf" /></th>
+					<th><fmt:message key="profissional.telefone" /></th>
+					<th><fmt:message key="profissional.sexo" /></th>
+					<th><fmt:message key="profissional.nascimento" /></th>
 				</tr>
 					<tr>
 						<td><c:out value="${profissional.id}" /></td>
@@ -50,53 +53,40 @@
 					</tr>
 			</table>
 			<br>
-			<h2> Informações da Vaga </h2>
+			<h2> <fmt:message key="vaga.info" /> </h2>
 						<table border="1">
 				<tr>
-					<th>IDVAGA</th>
-					<th>IDPESSOA</th>
-					<th>CNPJ EMPRESA</th>
-					<th>DESCRICAO</th>
-					<th>REMUNERAÇÃO</th>
-					<th>DATA LIMITE</th>
-					<th>STATUS</th>
-					<th>CURRICULO</th>
+					<th><fmt:message key="vaga.id" /></th>
+					<th><fmt:message key="vaga.descricao" /></th>
+					<th><fmt:message key="vaga.remuneracao" /></th>
+					<th><fmt:message key="vaga.datalimite" /></th>
+					<th><fmt:message key="vaga.curriculo" /></th>
 				</tr>
 					<tr>
 						<td><c:out value="${candidatura.idvaga}" /></td>
-						<td><c:out value="${candidatura.idpessoa}" /></td>
 						<td><c:out value="${candidatura.descricao}" /></td>
 						<td><c:out value="${candidatura.remuneracao}" /></td>
 						<td><c:out value="${candidatura.datalimite}" /></td>
-						<c:choose>
-					    	<c:when test="${candidatura.status=='ABERTO'}">
-							<td><a href="/<%=contextPath%>/users/empresas/avaliando?idvaga=<c:out value="${candidatura.idvaga}" />&idpessoa=<c:out value="${candidatura.idpessoa}" /> "> 
-							<c:out value="${candidatura.status}" />
-							</a> </td>
-					    	</c:when>    
-					    	<c:otherwise>
-							<td><c:out value="${candidatura.status}" /> </td>
-					    	</c:otherwise>
-						</c:choose>
 						<td><a href="/<%=contextPath%>/curriculo/<c:out value="${candidatura.curriculo}" />"> 
 					<c:out value="${candidatura.curriculo}" />
 				</a> </td>
 					</tr>
+
 			</table>
 			<form action="avaliaCandidatura" method="post">
 			<input type="hidden" name="idVaga" value="<c:out value='${candidatura.idvaga}' />" />
 			<input type="hidden" name="idProfissional" value="<c:out value='${candidatura.idpessoa}' />" />
 			<table border=1>
 					<tr>
-		<td><label for="link">Link Conferência
+		<td><label for="link"><fmt:message key="link.conferencia" />
 		</label></td>
 		<td><input type="text" name="link" size="45"></td>
 				</tr>
 				<tr>
 		<td colspan="2" align="center"><input type="submit" name="entrevista"
-			value="Entrevista" /></td>
+			value="<fmt:message key="entrevista" />" /></td>
 		<td colspan="2" align="center"><input type="submit" name="naoSelecionado"
-			value="Não Selecionado" /></td>
+			value="<fmt:message key="naoSelecionado" />" /></td>
 				</tr>
 				</table>
 			</form>

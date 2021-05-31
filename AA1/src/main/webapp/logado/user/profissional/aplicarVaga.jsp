@@ -31,6 +31,7 @@
 				</a> 
 			</h2>
 			<br/>
+			<h3><fmt:message key="vaga.listar" /></h3>
 		</div>
 		<div align="center">
 			<table border="1">
@@ -40,7 +41,6 @@
 					<th><fmt:message key="vaga.descricao" /></th>
 					<th><fmt:message key="vaga.remuneracao" /></th>
 					<th><fmt:message key="vaga.datalimite" /></th>
-					<th><fmt:message key="vaga.aberta" /></th>
 				</tr>
 				<c:forEach var="vaga" items="${requestScope.listaVagas}">
 					<tr>
