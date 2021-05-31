@@ -73,7 +73,7 @@ public class VagaDAO extends GenericDAO{
 
         List<Vaga> listaVagasAbertas = new ArrayList<>();
 
-        String sql = "SELECT ID, CNPJ, VAGA.DESCRICAO, REMUNERACAO, DATALIMITE FROM EMPRESA, VAGA WHERE IDUSUARIO = IDEMPRESA";
+        String sql = "SELECT ID, CIDADE, CNPJ, VAGA.DESCRICAO, REMUNERACAO, DATALIMITE FROM EMPRESA, VAGA WHERE IDUSUARIO = IDEMPRESA";
 
         try {
             Connection conn = this.getConnection();
@@ -87,6 +87,7 @@ public class VagaDAO extends GenericDAO{
                 float remuneracao = resultSet.getFloat("remuneracao");
                 Date dataLimite = resultSet.getDate("datalimite");
                 Vaga vaga = new Vaga(id ,cnpj  , descricao, remuneracao, dataLimite);
+                vaga.setCidade(resultSet.getString("cidade"));
                 if(vaga.getAberta()) // Caso for aberta adiciona a vaga na lista.
                 	listaVagasAbertas.add(vaga);
             }
@@ -156,6 +157,39 @@ public class VagaDAO extends GenericDAO{
 			
 		} catch (SQLException e) {
 		}
+		return vagasEmpresa;
+	}
+	
+	public List<Vaga> getVagasCidade(String cidade) {
+		List<Vaga> vagasEmpresa = new ArrayList<Vaga>();
+		
+		String sql = "SELECT * FROM VAGA, EMPRESA WHERE VAGA.IDEMPRESA = EMPRESA.IDUSUARIO AND CIDADE = ?";
+		try {
+			
+			
+			Connection conn = this.getConnection();
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setString(1, cidade);
+			
+			System.out.println(statement);
+			ResultSet resultSet = statement.executeQuery();
+			
+			while(resultSet.next()) {
+				Long idVaga = resultSet.getLong("id");
+				Long cnpjEmpresa = resultSet.getLong("cnpj");
+				String descricao = resultSet.getString("descricao");
+				Float remuneracao = resultSet.getFloat("remuneracao");
+				Date dataLimite = resultSet.getDate("datalimite");
+				
+				Vaga vaga = new Vaga(idVaga,cnpjEmpresa, descricao, remuneracao, dataLimite);
+				vaga.setCidade(resultSet.getString("cidade"));
+				if(vaga.getAberta())
+					vagasEmpresa.add(vaga);
+			}
+		} catch (SQLException e) {
+			System.out.println("erro");
+		}
+		
 		return vagasEmpresa;
 	}
 	

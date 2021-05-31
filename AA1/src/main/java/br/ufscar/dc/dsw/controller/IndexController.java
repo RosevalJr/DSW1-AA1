@@ -1,6 +1,7 @@
 package br.ufscar.dc.dsw.controller;
 
 import java.io.IOException;
+import java.text.Normalizer;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -17,7 +18,7 @@ import br.ufscar.dc.dsw.dao.VagaDAO;
 import br.ufscar.dc.dsw.domain.Usuario;
 import br.ufscar.dc.dsw.domain.Vaga;
 
-@WebServlet(name = "Index", urlPatterns = { "/index.jsp", "/logout.jsp", "/listarVagasAbertas" })
+@WebServlet(name = "Index", urlPatterns = { "/index.jsp", "/logout.jsp", "/listarVagasAbertas", "/auxListaVagasCidade" })
 public class IndexController extends HttpServlet{
 	
 	private static final long serialVersionUID = 1L;
@@ -74,7 +75,11 @@ public class IndexController extends HttpServlet{
         if(action.equals("/AA1/listarVagasAbertas")) {
         	lista(request, response);
         }
-		
+        if(action.equals("/AA1/auxListaVagasCidade")) {
+        	lista(request, response);
+        }
+        
+        
 		String URL = "/login.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(URL);
 		rd.forward(request, response);
@@ -91,10 +96,22 @@ public class IndexController extends HttpServlet{
 	}
 	
     private void lista(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Vaga> listaVagasAbertas = dao.getAllAberta();
-        request.setAttribute("listaVagasAbertas", listaVagasAbertas);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/listarVagasAbertas.jsp");
-        dispatcher.forward(request, response);
+        String cidade = request.getParameter("B");
+        
+    	if(cidade == null) {
+	    	List<Vaga> listaVagasAbertas = dao.getAllAberta();
+	        request.setAttribute("listaVagasAbertas", listaVagasAbertas);
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("/listarVagasAbertas.jsp");
+	        dispatcher.forward(request, response);
+        }
+        else {
+        	cidade = Normalizer.normalize(cidade, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+        	
+        	List<Vaga> listaVagasAbertas = dao.getVagasCidade(cidade);
+	        request.setAttribute("listaVagasAbertas", listaVagasAbertas);
+        	RequestDispatcher dispatcher = request.getRequestDispatcher("/listarVagasAbertas.jsp");
+	        dispatcher.forward(request, response);
+        }
     }
 
 }

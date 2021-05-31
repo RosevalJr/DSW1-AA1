@@ -11,6 +11,7 @@ public class Vaga {
 	private Float remuneracao;
 	private Date dataLimite;
 	private boolean aberta;
+	private String cidade;
 	
 	public Vaga(Long idVaga, Long cnpjEmpresa, String descricao, Float remuneracao, Date dataLimite) {
 		this.cnpjEmpresa = cnpjEmpresa;
@@ -25,16 +26,13 @@ public class Vaga {
 		System.out.println(dataLimite);
 		System.out.println(dataAtualSql);
 		if(dataLimite.equals(dataAtualSql)) {
-			System.out.println("IF1");
 			this.aberta = true;
 		}
 		else {
 			if(dataLimite.before(dataAtualSql)) {
-				System.out.println("IF2");
 				this.aberta = false;
 			}
 			else {
-				System.out.println("IF3");
 				this.aberta = true;
 			}
 			
@@ -54,21 +52,16 @@ public class Vaga {
 		System.out.println(dataLimite);
 		System.out.println(dataAtualSql);
 		if(dataLimite.equals(dataAtualSql)) {
-			System.out.println("IF1");
 			this.aberta = true;
 		}
 		else {
 			if(dataLimite.before(dataAtualSql)) {
-				System.out.println("IF2");
 				this.aberta = false;
 			}
 			else {
-				System.out.println("IF3");
 				this.aberta = true;
-			}
-			
-		}
-		
+			}	
+		}	
 	}
 	
 	public Long getCnpjempresa() {
@@ -144,4 +137,11 @@ public class Vaga {
 		return this.aberta;
 	}
 	
+	public String getCidade() {
+		return cidade;
+	}
+	
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
 }

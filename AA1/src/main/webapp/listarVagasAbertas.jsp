@@ -37,6 +37,7 @@
 					<th><fmt:message key="vaga.descricao" /></th>
 					<th><fmt:message key="vaga.remuneracao" /></th>
 					<th><fmt:message key="vaga.datalimite" /></th>
+					<th><fmt:message key="vaga.localidade" /></th>
 				</tr>
 				<c:forEach var="vaga" items="${requestScope.listaVagasAbertas}">
 					<tr>
@@ -45,9 +46,22 @@
 						<td><c:out value="${vaga.descricao}" /></td>
 						<td><c:out value="${vaga.remuneracao}" /></td>
 						<td><c:out value="${vaga.datalimite}" /></td>
+						<td><c:out value="${vaga.cidade}" /></td>
 					</tr>
 				</c:forEach>
 			</table>
+		</div>
+		
+		<div align="center">
+			<h3>
+				<fmt:message key="digite.cidade" />
+			</h3>
+		
+		
+			<form name="A" action="auxListaVagasCidade" method="POST">
+				<input type="text" name="B" placeholder="<fmt:message key="nome.cidade"/>"/> <br> <br>
+				<input type="submit" name="cidade" value="<fmt:message key="enviar"/>">
+			</form>
 		</div>
 	</body>
 </fmt:bundle>
