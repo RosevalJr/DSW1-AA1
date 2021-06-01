@@ -21,8 +21,8 @@
 				<fmt:message key="profissional.receber" />
 			</h1>
 			<h2>
-				<a href="/<%=contextPath%>/profissionais"> <fmt:message
-						key="profissional.entidade" />
+				<a href="/<%=contextPath%>/admins/empresas"> <fmt:message
+						key="empresa.entidade" />
 				</a> &nbsp;&nbsp;&nbsp; <a
 					href="${pageContext.request.contextPath}/logout.jsp"> <fmt:message
 						key="sair.link" />
