@@ -7,9 +7,9 @@
 <fmt:bundle basename="messages">
 
 	<head>
-		<title><fmt:message key="header.vaga" /></title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><fmt:message key="header.vaga" /></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	</head>
 
 	<body>
@@ -18,20 +18,21 @@
 		%>
 		<div align="center">
 			<h1>
-				<fmt:message key="vaga.empresa" /> <c:out value="${usuarioLogado.nome}" />
+				<fmt:message key="vaga.empresa" />
+				<c:out value="${usuarioLogado.nome}" />
 			</h1>
 			<h2>
-				<a href="${pageContext.request.contextPath}/logout.jsp"> 
-					<fmt:message key="sair.link" />
+				<a href="${pageContext.request.contextPath}/logout.jsp"> <fmt:message
+						key="sair.link" />
+				</a> <br /> <br /> <a
+					href="/<%=contextPath%>/users/empresas/cadastroVaga"> <fmt:message
+						key="vaga.criar" />
 				</a>
-				<br/>
-				<br/>
-				<a href="/<%=contextPath%>/users/empresas/cadastroVaga"> 
-					<fmt:message key="vaga.criar" />
-				</a> 
 			</h2>
-			<br/>
-			<h3><fmt:message key="vaga.listar"/> </h3>
+			<br />
+			<h3>
+				<fmt:message key="vaga.listar" />
+			</h3>
 		</div>
 		<div align="center">
 			<table border="1">
@@ -55,10 +56,11 @@
 							<c:otherwise>
 								<td><fmt:message key="vaga.aberta.false" /></td>
 							</c:otherwise>
-						</c:choose> 
-						<td> <a href="/<%=contextPath%>/users/empresas/listarCandidaturas?idvaga=<c:out value="${vaga.idvaga}" />"> 
-					<fmt:message key="candidatura.visualizar" />
-				</a>  </td>
+						</c:choose>
+						<td><a
+							href="/<%=contextPath%>/users/empresas/listarCandidaturas?idvaga=<c:out value="${vaga.idvaga}" />">
+								<fmt:message key="candidatura.visualizar" />
+						</a></td>
 					</tr>
 				</c:forEach>
 			</table>

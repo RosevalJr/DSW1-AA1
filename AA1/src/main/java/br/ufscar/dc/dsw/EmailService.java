@@ -50,27 +50,27 @@ public class EmailService {
 
 			MimeBodyPart mimeBodyPart = new MimeBodyPart();
 			mimeBodyPart.setContent(body, "text/plain");
-			
+
 			Multipart multipart = new MimeMultipart();
 			multipart.addBodyPart(mimeBodyPart);
-			
+
 			if (file != null) {
 				MimeBodyPart attachmentBodyPart = new MimeBodyPart();
 				attachmentBodyPart.attachFile(file);
-				multipart.addBodyPart(attachmentBodyPart);	
+				multipart.addBodyPart(attachmentBodyPart);
 			}
-			
+
 			message.setContent(multipart);
 			Transport.send(message);
-			
+
 			System.out.println("Mensagem enviada com sucesso!");
-			
+
 		} catch (Exception e) {
 			System.out.println("Mensagem não enviada!");
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void send(InternetAddress from, InternetAddress to, String subject, String body) {
 		send(from, to, subject, body, null);
 	}

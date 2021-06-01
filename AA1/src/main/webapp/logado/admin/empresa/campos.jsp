@@ -29,28 +29,28 @@
 		<td><input type="text" name="nome" size="45" required
 			value="<c:out value='${empresa.nome}' />" /></td>
 	</tr>
-	
+
 	<tr>
 		<td><label for="senha"><fmt:message key="empresa.senha" />
 		</label></td>
 		<td><input type="text" name="senha" size="45" required
 			value="<c:out value='${empresa.senha}' />" /></td>
 	</tr>
-	
+
 	<tr>
 		<td><label for="email"><fmt:message key="empresa.email" />
 		</label></td>
 		<td><input type="text" name="email" size="45" required
 			value="<c:out value='${empresa.email}' />" /></td>
 	</tr>
-	
+
 	<tr>
-		<td><label for="descricao"><fmt:message key="empresa.descricao" />
-		</label></td>
+		<td><label for="descricao"><fmt:message
+					key="empresa.descricao" /> </label></td>
 		<td><input type="text" name="descricao" size="45" required
 			value="<c:out value='${empresa.descricao}' />" /></td>
 	</tr>
-	
+
 	<tr>
 		<td><label for="cidade"><fmt:message key="empresa.cidade" />
 		</label></td>

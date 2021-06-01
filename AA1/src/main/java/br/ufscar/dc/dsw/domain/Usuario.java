@@ -6,18 +6,18 @@ public class Usuario {
 	private String login;
 	private String senha;
 	private String papel;
-	
+
 	public Usuario(Long id) {
 		this.id = id;
 	}
-	
+
 	public Usuario(String nome, String login, String senha, String papel) {
 		this.nome = nome;
 		this.login = login;
 		this.senha = senha;
 		this.papel = papel;
 	}
-	
+
 	public Usuario(Long id, String nome, String login, String senha, String papel) {
 		this.id = id;
 		this.nome = nome;
@@ -25,7 +25,7 @@ public class Usuario {
 		this.senha = senha;
 		this.papel = papel;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -65,6 +65,5 @@ public class Usuario {
 	public void setPapel(String papel) {
 		this.papel = papel;
 	}
-	
-}
 
+}

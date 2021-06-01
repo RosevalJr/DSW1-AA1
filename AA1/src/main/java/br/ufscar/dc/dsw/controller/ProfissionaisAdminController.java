@@ -20,23 +20,25 @@ import br.ufscar.dc.dsw.util.Erro;
 
 @WebServlet(urlPatterns = "/admins/profissionais/*")
 public class ProfissionaisAdminController extends HttpServlet {
-	
+
 	private static final long serialVersionUID = 1L;
 
-    private ProfissionalDAO dao;
-    
-    @Override
-    public void init() {
-    	dao = new ProfissionalDAO();
-    }
-    
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
-    }
-    
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private ProfissionalDAO dao;
+
+	@Override
+	public void init() {
+		dao = new ProfissionalDAO();
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
+	}
+
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 		Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogado");
 		Erro erros = new Erro();
@@ -52,46 +54,46 @@ public class ProfissionaisAdminController extends HttpServlet {
 			rd.forward(request, response);
 			return;
 		}
-		
-        String action = request.getPathInfo();
-        if (action == null) {
-            action = "";
-        }
 
-        try {
-            switch (action) {
-                case "/cadastro":
-                	apresentaFormCadastro(request, response);
-                    break;
-    			case "/insercao":
-    				insere(request, response);
-    				break;
-    			case "/remocao":
-    				remove(request, response);
-    				break;
-    			case "/edicao":
-    				apresentaFormEdicao(request, response);
-    				break;
-    			case "/atualizacao":
-    				atualize(request, response);
-    				break;
-                default:
-                    lista(request, response);
-                    break;
-            }
-        } catch (RuntimeException | IOException | ServletException e) {
-            throw new ServletException(e);
-        }
-    }
-    
-    private void insere(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String action = request.getPathInfo();
+		if (action == null) {
+			action = "";
+		}
+
+		try {
+			switch (action) {
+			case "/cadastro":
+				apresentaFormCadastro(request, response);
+				break;
+			case "/insercao":
+				insere(request, response);
+				break;
+			case "/remocao":
+				remove(request, response);
+				break;
+			case "/edicao":
+				apresentaFormEdicao(request, response);
+				break;
+			case "/atualizacao":
+				atualize(request, response);
+				break;
+			default:
+				lista(request, response);
+				break;
+			}
+		} catch (RuntimeException | IOException | ServletException e) {
+			throw new ServletException(e);
+		}
+	}
+
+	private void insere(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		
+
 		Long cpf;
-		
+
 		try {
 			cpf = Long.parseLong(request.getParameter("cpf"));
-		} catch(NumberFormatException nfe) {
+		} catch (NumberFormatException nfe) {
 			Erro erros = new Erro();
 			erros.add("O campo cpf deve ser apenas comoposto por números");
 			request.setAttribute("mensagens", erros);
@@ -104,17 +106,17 @@ public class ProfissionaisAdminController extends HttpServlet {
 		String email = request.getParameter("email");
 		String telefone = request.getParameter("telefone");
 		String sexo = request.getParameter("sexo");
-		
+
 		SimpleDateFormat formato;
 		java.util.Date nascimento;
 		try {
 			formato = new SimpleDateFormat("yyyy-MM-dd");
 			nascimento = formato.parse(request.getParameter("nascimento"));
-		} catch(ParseException pe) {
+		} catch (ParseException pe) {
 			try {
 				formato = new SimpleDateFormat("yyyy/MM/dd");
 				nascimento = formato.parse(request.getParameter("nascimento"));
-			} catch(ParseException pe2) {
+			} catch (ParseException pe2) {
 				Erro erros = new Erro();
 				erros.add("Data deve ser inserida como ano/mês/dia ou ano-mês-dia");
 				request.setAttribute("mensagens", erros);
@@ -126,11 +128,10 @@ public class ProfissionaisAdminController extends HttpServlet {
 		Date nasc = new Date(nascimento.getTime());
 		Long id = (long) 0;
 		Profissional profissional = new Profissional(id, cpf, nome, senha, email, telefone, sexo, nasc);
-		
+
 		try {
-		dao.insert(profissional);
-		}
-		catch(RuntimeException e) {
+			dao.insert(profissional);
+		} catch (RuntimeException e) {
 			Erro erros = new Erro();
 			erros.add("Esse CPF já esta cadastrado no sistema.");
 			erros.add("Por favor insira outro CPF ou procure pelo profissional ja cadastrado.");
@@ -140,23 +141,22 @@ public class ProfissionaisAdminController extends HttpServlet {
 			return;
 		}
 		response.sendRedirect("lista");
-    }
-    
-    
-    private void lista(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Profissional> listaProfissionais = dao.getAll();
-        request.setAttribute("listaProfissionais", listaProfissionais);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/admin/profissional/lista.jsp");
-        dispatcher.forward(request, response);
-    }
-    
-    private void apresentaFormCadastro(HttpServletRequest request, HttpServletResponse response)
+	}
+
+	private void lista(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		List<Profissional> listaProfissionais = dao.getAll();
+		request.setAttribute("listaProfissionais", listaProfissionais);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/admin/profissional/lista.jsp");
+		dispatcher.forward(request, response);
+	}
+
+	private void apresentaFormCadastro(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/admin/profissional/formulario.jsp");
 		dispatcher.forward(request, response);
 	}
-    
-    private void remove(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+	private void remove(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		Long id = Long.parseLong(request.getParameter("id"));
 
 		Profissional profissional = new Profissional(id);
@@ -164,8 +164,8 @@ public class ProfissionaisAdminController extends HttpServlet {
 		dao.delete(profissional);
 		response.sendRedirect("lista");
 	}
-    
-    private void apresentaFormEdicao(HttpServletRequest request, HttpServletResponse response)
+
+	private void apresentaFormEdicao(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		Long id = Long.parseLong(request.getParameter("id"));
 		Profissional profissional = dao.get(id);
@@ -173,17 +173,17 @@ public class ProfissionaisAdminController extends HttpServlet {
 		request.setAttribute("profissional", profissional);
 		dispatcher.forward(request, response);
 	}
-    
-    private void atualize(HttpServletRequest request, HttpServletResponse response)
+
+	private void atualize(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-    	
-    	request.setCharacterEncoding("UTF-8");
-    	Long id = Long.parseLong(request.getParameter("id"));
-    	Long cpf;
-		
+
+		request.setCharacterEncoding("UTF-8");
+		Long id = Long.parseLong(request.getParameter("id"));
+		Long cpf;
+
 		try {
 			cpf = Long.parseLong(request.getParameter("cpf"));
-		} catch(NumberFormatException nfe) {
+		} catch (NumberFormatException nfe) {
 			Erro erros = new Erro();
 			erros.add("O campo cpf deve ser apenas comoposto por números");
 			request.setAttribute("mensagens", erros);
@@ -196,17 +196,17 @@ public class ProfissionaisAdminController extends HttpServlet {
 		String email = request.getParameter("email");
 		String telefone = request.getParameter("telefone");
 		String sexo = request.getParameter("sexo");
-		
+
 		SimpleDateFormat formato;
 		java.util.Date nascimento;
 		try {
 			formato = new SimpleDateFormat("yyyy-MM-dd");
 			nascimento = formato.parse(request.getParameter("nascimento"));
-		} catch(ParseException pe) {
+		} catch (ParseException pe) {
 			try {
 				formato = new SimpleDateFormat("yyyy/MM/dd");
 				nascimento = formato.parse(request.getParameter("nascimento"));
-			} catch(ParseException pe2) {
+			} catch (ParseException pe2) {
 				Erro erros = new Erro();
 				erros.add("Data deve ser inserida como ano/mês/dia ou ano-mês-dia");
 				request.setAttribute("mensagens", erros);
@@ -216,21 +216,20 @@ public class ProfissionaisAdminController extends HttpServlet {
 			}
 		}
 		Date nasc = new Date(nascimento.getTime());
-		
+
 		Profissional profissional = new Profissional(id, cpf, nome, senha, email, telefone, sexo, nasc);
-	try {
-		dao.update(profissional);
-	}
-	catch(RuntimeException e) {
-		Erro erros = new Erro();
-		erros.add("Esse CPF já esta cadastrado no sistema.");
-		erros.add("Por favor insira outro CPF ou procure pelo profissional ja cadastrado.");
-		request.setAttribute("mensagens", erros);
-		RequestDispatcher rd = request.getRequestDispatcher("/erros.jsp");
-		rd.forward(request, response);
-		return;
-	}
-		
+		try {
+			dao.update(profissional);
+		} catch (RuntimeException e) {
+			Erro erros = new Erro();
+			erros.add("Esse CPF já esta cadastrado no sistema.");
+			erros.add("Por favor insira outro CPF ou procure pelo profissional ja cadastrado.");
+			request.setAttribute("mensagens", erros);
+			RequestDispatcher rd = request.getRequestDispatcher("/erros.jsp");
+			rd.forward(request, response);
+			return;
+		}
+
 		response.sendRedirect("lista");
-	} 
+	}
 }

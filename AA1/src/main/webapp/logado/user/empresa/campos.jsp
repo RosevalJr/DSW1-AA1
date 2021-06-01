@@ -7,23 +7,24 @@
 	<caption>
 		<fmt:message key="vaga.criar" />
 	</caption>
-	
+
 	<tr>
-		<td><label for="descricao"> <fmt:message key="vaga.descricao" />
+		<td><label for="descricao"> <fmt:message
+					key="vaga.descricao" />
 		</label></td>
-		<td><input type="text" id="descricao" name="descricao" size="45" required
-			value="<c:out value='${vaga.descricao}' />" /></td>
+		<td><input type="text" id="descricao" name="descricao" size="45"
+			required value="<c:out value='${vaga.descricao}' />" /></td>
 	</tr>
 	<tr>
-		<td><label for="remuneracao"><fmt:message key="vaga.remuneracao" />
-		</label></td>
+		<td><label for="remuneracao"><fmt:message
+					key="vaga.remuneracao" /> </label></td>
 		<td><input type="text" name="remuneracao" size="45" required
 			value="<c:out value='${vaga.remuneracao}' />" /></td>
 	</tr>
-	
+
 	<tr>
-		<td><label for="datalimite"><fmt:message key="vaga.datalimite" />
-		</label></td>
+		<td><label for="datalimite"><fmt:message
+					key="vaga.datalimite" /> </label></td>
 		<td><input type="text" name="datalimite" size="45" required
 			value="<c:out value='${vaga.datalimite}' />" /></td>
 	</tr>

@@ -7,9 +7,9 @@
 <fmt:bundle basename="messages">
 
 	<head>
-		<title><fmt:message key="header.vaga" /></title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><fmt:message key="header.vaga" /></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	</head>
 
 	<body>
@@ -18,23 +18,20 @@
 		%>
 		<div align="center">
 			<h1>
-				<fmt:message key="vaga.formulario" /> <c:out value="${usuarioLogado.nome}" />
+				<fmt:message key="vaga.formulario" />
+				<c:out value="${usuarioLogado.nome}" />
 			</h1>
 			<h2>
-				<a href="${pageContext.request.contextPath}/logout.jsp"> 
-					<fmt:message key="sair.link" />
-				</a>
-				<br/>
-				<br/>
-				<a href="lista"> 
-					<fmt:message key="vaga.listar" />
+				<a href="${pageContext.request.contextPath}/logout.jsp"> <fmt:message
+						key="sair.link" />
+				</a> <br /> <br /> <a href="lista"> <fmt:message key="vaga.listar" />
 				</a>
 			</h2>
 		</div>
 		<div align="center">
-				<form action="insercao" method="post">
-					<%@include file="campos.jsp"%>
-				</form>
+			<form action="insercao" method="post">
+				<%@include file="campos.jsp"%>
+			</form>
 		</div>
 		<c:if test="${!empty requestScope.mensagens}">
 			<ul class="erro">

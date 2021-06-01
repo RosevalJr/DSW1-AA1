@@ -12,185 +12,184 @@ import java.util.List;
 import br.ufscar.dc.dsw.domain.Empresa;
 import br.ufscar.dc.dsw.domain.Vaga;
 
-public class VagaDAO extends GenericDAO{
-	
+public class VagaDAO extends GenericDAO {
+
 	public void insert(Vaga vaga) {
-		
+
 		// Recupera empresa dado o cnpj passado.
 		EmpresaDAO empresaDao = new EmpresaDAO();
 		Empresa empresa = empresaDao.getbyCnpj(vaga.getCnpjempresa());
-		
+
 		String sql = "INSERT INTO VAGA (IDEMPRESA, DESCRICAO, REMUNERACAO, DATALIMITE) VALUES(?, ?, ?, ?)";
 		try {
 			Connection conn = this.getConnection();
 			PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			
+
 			statement = conn.prepareStatement(sql);
 			statement.setLong(1, empresa.getId());
 			statement.setString(2, vaga.getDescricao());
 			statement.setFloat(3, vaga.getRemuneracao());
 			statement.setDate(4, vaga.getDatalimite());
 			statement.executeUpdate();
-			
+
 			statement.close();
 			conn.close();
-		} catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public List<Vaga> getAll() {
 
-        List<Vaga> listaVagas = new ArrayList<>();
+		List<Vaga> listaVagas = new ArrayList<>();
 
-        String sql = "SELECT ID, CNPJ, VAGA.DESCRICAO, REMUNERACAO, DATALIMITE FROM EMPRESA, VAGA WHERE IDUSUARIO = IDEMPRESA";
+		String sql = "SELECT ID, CNPJ, VAGA.DESCRICAO, REMUNERACAO, DATALIMITE FROM EMPRESA, VAGA WHERE IDUSUARIO = IDEMPRESA";
 
-        try {
-            Connection conn = this.getConnection();
-            Statement statement = conn.createStatement();
+		try {
+			Connection conn = this.getConnection();
+			Statement statement = conn.createStatement();
 
-            ResultSet resultSet = statement.executeQuery(sql);
-            while (resultSet.next()) {
-            	long id = resultSet.getLong("id");
-                long cnpj = resultSet.getLong("cnpj");
-                String descricao = resultSet.getString("descricao");
-                float remuneracao = resultSet.getFloat("remuneracao");
-                Date dataLimite = resultSet.getDate("datalimite");
-                Vaga vaga = new Vaga(id, cnpj, descricao, remuneracao, dataLimite);
-                listaVagas.add(vaga);
-            }
+			ResultSet resultSet = statement.executeQuery(sql);
+			while (resultSet.next()) {
+				long id = resultSet.getLong("id");
+				long cnpj = resultSet.getLong("cnpj");
+				String descricao = resultSet.getString("descricao");
+				float remuneracao = resultSet.getFloat("remuneracao");
+				Date dataLimite = resultSet.getDate("datalimite");
+				Vaga vaga = new Vaga(id, cnpj, descricao, remuneracao, dataLimite);
+				listaVagas.add(vaga);
+			}
 
-            resultSet.close();
-            statement.close();
-            conn.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return listaVagas;
-    }
-	
+			resultSet.close();
+			statement.close();
+			conn.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return listaVagas;
+	}
+
 	public List<Vaga> getAllAberta() {
 
-        List<Vaga> listaVagasAbertas = new ArrayList<>();
+		List<Vaga> listaVagasAbertas = new ArrayList<>();
 
-        String sql = "SELECT ID, CIDADE, CNPJ, VAGA.DESCRICAO, REMUNERACAO, DATALIMITE FROM EMPRESA, VAGA WHERE IDUSUARIO = IDEMPRESA";
+		String sql = "SELECT ID, CIDADE, CNPJ, VAGA.DESCRICAO, REMUNERACAO, DATALIMITE FROM EMPRESA, VAGA WHERE IDUSUARIO = IDEMPRESA";
 
-        try {
-            Connection conn = this.getConnection();
-            Statement statement = conn.createStatement();
+		try {
+			Connection conn = this.getConnection();
+			Statement statement = conn.createStatement();
 
-            ResultSet resultSet = statement.executeQuery(sql);
-            while (resultSet.next()) {
-            	long id = resultSet.getLong("id");
-                long cnpj = resultSet.getLong("cnpj");
-                String descricao = resultSet.getString("descricao");
-                float remuneracao = resultSet.getFloat("remuneracao");
-                Date dataLimite = resultSet.getDate("datalimite");
-                Vaga vaga = new Vaga(id ,cnpj  , descricao, remuneracao, dataLimite);
-                vaga.setCidade(resultSet.getString("cidade"));
-                if(vaga.getAberta()) // Caso for aberta adiciona a vaga na lista.
-                	listaVagasAbertas.add(vaga);
-            }
+			ResultSet resultSet = statement.executeQuery(sql);
+			while (resultSet.next()) {
+				long id = resultSet.getLong("id");
+				long cnpj = resultSet.getLong("cnpj");
+				String descricao = resultSet.getString("descricao");
+				float remuneracao = resultSet.getFloat("remuneracao");
+				Date dataLimite = resultSet.getDate("datalimite");
+				Vaga vaga = new Vaga(id, cnpj, descricao, remuneracao, dataLimite);
+				vaga.setCidade(resultSet.getString("cidade"));
+				if (vaga.getAberta()) // Caso for aberta adiciona a vaga na lista.
+					listaVagasAbertas.add(vaga);
+			}
 
-            resultSet.close();
-            statement.close();
-            conn.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return listaVagasAbertas;
-    }
-	
+			resultSet.close();
+			statement.close();
+			conn.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return listaVagasAbertas;
+	}
+
 	public Vaga getVaga(Long id) {
 
 		Vaga vaga = null;
 		String sql = "SELECT ID, IDEMPRESA, CNPJ,  VAGA.DESCRICAO, REMUNERACAO, DATALIMITE FROM VAGA, EMPRESA WHERE IDEMPRESA = EMPRESA.IDUSUARIO AND ID = ?";
-	
+
 		try {
 			Connection conn = this.getConnection();
 			PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			
+
 			statement = conn.prepareStatement(sql);
 			statement.setLong(1, id);
-			
-			ResultSet resultSet = statement.executeQuery();
-			
-			if(resultSet.next()) {
-            	Long idLocal = resultSet.getLong("id");
-            	Long cnpjEmpresa = resultSet.getLong("cnpj");
-                String descricao = resultSet.getString("descricao");
-                float remuneracao = resultSet.getFloat("remuneracao");
-                Date dataLimite = resultSet.getDate("datalimite");
-                vaga = new Vaga(idLocal, cnpjEmpresa, descricao, remuneracao, dataLimite);
-            }
 
-            resultSet.close();
-            statement.close();
-            conn.close();	
+			ResultSet resultSet = statement.executeQuery();
+
+			if (resultSet.next()) {
+				Long idLocal = resultSet.getLong("id");
+				Long cnpjEmpresa = resultSet.getLong("cnpj");
+				String descricao = resultSet.getString("descricao");
+				float remuneracao = resultSet.getFloat("remuneracao");
+				Date dataLimite = resultSet.getDate("datalimite");
+				vaga = new Vaga(idLocal, cnpjEmpresa, descricao, remuneracao, dataLimite);
+			}
+
+			resultSet.close();
+			statement.close();
+			conn.close();
 		} catch (SQLException e) {
 		}
-		
+
 		return vaga;
 	}
-	
-	public List<Vaga> getVagasEmpresa(Long idEmpresa){
+
+	public List<Vaga> getVagasEmpresa(Long idEmpresa) {
 		List<Vaga> vagasEmpresa = new ArrayList<Vaga>();
-		
+
 		String sql = "SELECT * FROM VAGA, EMPRESA WHERE VAGA.IDEMPRESA = EMPRESA.IDUSUARIO AND EMPRESA.IDUSUARIO = ?";
-		
+
 		try {
 			Connection conn = this.getConnection();
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setLong(1, idEmpresa);
 			ResultSet resultSet = statement.executeQuery();
-			
-			while(resultSet.next()) {
+
+			while (resultSet.next()) {
 				Long idVaga = resultSet.getLong("id");
 				Long cnpjEmpresa = resultSet.getLong("cnpj");
 				String descricao = resultSet.getString("descricao");
 				Float remuneracao = resultSet.getFloat("remuneracao");
 				Date dataLimite = resultSet.getDate("datalimite");
-				
-				Vaga vaga = new Vaga(idVaga,cnpjEmpresa, descricao, remuneracao, dataLimite);
+
+				Vaga vaga = new Vaga(idVaga, cnpjEmpresa, descricao, remuneracao, dataLimite);
 				vagasEmpresa.add(vaga);
 			}
-			
+
 		} catch (SQLException e) {
 		}
 		return vagasEmpresa;
 	}
-	
+
 	public List<Vaga> getVagasCidade(String cidade) {
 		List<Vaga> vagasEmpresa = new ArrayList<Vaga>();
-		
+
 		String sql = "SELECT * FROM VAGA, EMPRESA WHERE VAGA.IDEMPRESA = EMPRESA.IDUSUARIO AND CIDADE = ?";
 		try {
-			
-			
+
 			Connection conn = this.getConnection();
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, cidade);
-			
+
 			System.out.println(statement);
 			ResultSet resultSet = statement.executeQuery();
-			
-			while(resultSet.next()) {
+
+			while (resultSet.next()) {
 				Long idVaga = resultSet.getLong("id");
 				Long cnpjEmpresa = resultSet.getLong("cnpj");
 				String descricao = resultSet.getString("descricao");
 				Float remuneracao = resultSet.getFloat("remuneracao");
 				Date dataLimite = resultSet.getDate("datalimite");
-				
-				Vaga vaga = new Vaga(idVaga,cnpjEmpresa, descricao, remuneracao, dataLimite);
+
+				Vaga vaga = new Vaga(idVaga, cnpjEmpresa, descricao, remuneracao, dataLimite);
 				vaga.setCidade(resultSet.getString("cidade"));
-				if(vaga.getAberta())
+				if (vaga.getAberta())
 					vagasEmpresa.add(vaga);
 			}
 		} catch (SQLException e) {
 			System.out.println("erro");
 		}
-		
+
 		return vagasEmpresa;
 	}
-	
+
 }

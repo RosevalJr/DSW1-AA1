@@ -33,27 +33,28 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 @WebServlet(urlPatterns = "/users/profissionais/*")
-public class ProfissionaisUserController extends HttpServlet{
+public class ProfissionaisUserController extends HttpServlet {
 
-	
 	private static final long serialVersionUID = 1L;
 
-    private ProfissionalDAO dao;
-    private CandidaturaDAO candidaturaDao;
-    
-    @Override
-    public void init() {
-    	dao = new ProfissionalDAO();
-    	candidaturaDao = new CandidaturaDAO();
-    }
-    
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
-    }
-    
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private ProfissionalDAO dao;
+	private CandidaturaDAO candidaturaDao;
+
+	@Override
+	public void init() {
+		dao = new ProfissionalDAO();
+		candidaturaDao = new CandidaturaDAO();
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
+	}
+
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 		Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogado");
 		Erro erros = new Erro();
@@ -69,45 +70,45 @@ public class ProfissionaisUserController extends HttpServlet{
 			rd.forward(request, response);
 			return;
 		}
-		
-        String action = request.getPathInfo();
-        if (action == null) {
-            action = "";
-        }
 
-        try {
-            switch (action) {
-    			case "/insercao":
-    				insere(request, response);
-    				break;
-    			case "/remocao":
-    				remove(request, response);
-    				break;
-    			case "/aplicarVaga":
-    				listaVagas(request, response);
-    				break;
-    			case "/candidatar":
-    				apresentaFormFile(request, response);
-    				break;
-    			case "/insereCandidatura":
-    				insere(request, response);
-    				break;
-                default:
-                    lista(request, response);
-                    break;
-            }
-        } catch (RuntimeException | IOException | ServletException e) {
-            throw new ServletException(e);
-        }
-    }
-    
-    private void insere(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String action = request.getPathInfo();
+		if (action == null) {
+			action = "";
+		}
+
+		try {
+			switch (action) {
+			case "/insercao":
+				insere(request, response);
+				break;
+			case "/remocao":
+				remove(request, response);
+				break;
+			case "/aplicarVaga":
+				listaVagas(request, response);
+				break;
+			case "/candidatar":
+				apresentaFormFile(request, response);
+				break;
+			case "/insereCandidatura":
+				insere(request, response);
+				break;
+			default:
+				lista(request, response);
+				break;
+			}
+		} catch (RuntimeException | IOException | ServletException e) {
+			throw new ServletException(e);
+		}
+	}
+
+	private void insere(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-    	Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogado");
-    	Long idUsuario = usuario.getId();
-    	Vaga vaga = (Vaga) request.getSession().getAttribute("ultimaVagaCandidatada");
+		Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogado");
+		Long idUsuario = usuario.getId();
+		Vaga vaga = (Vaga) request.getSession().getAttribute("ultimaVagaCandidatada");
 		String fileName = null;
-		
+
 		if (ServletFileUpload.isMultipartContent(request)) {
 
 			DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -150,21 +151,20 @@ public class ProfissionaisUserController extends HttpServlet{
 			candidaturaDao.insert(candidatura);
 			response.sendRedirect("lista");
 		}
-    }
-    
-    
-    private void lista(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogado");
-    	Long idUsuario = usuario.getId();
-    	
-    	List<Candidatura> listaCandidaturas = candidaturaDao.getCandidaturasByPessoa(idUsuario);
-    	
-    	request.setAttribute("listaCandidaturas", listaCandidaturas);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/user/profissional/lista.jsp");
-        dispatcher.forward(request, response);
-    }
-    
-    private void remove(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	}
+
+	private void lista(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogado");
+		Long idUsuario = usuario.getId();
+
+		List<Candidatura> listaCandidaturas = candidaturaDao.getCandidaturasByPessoa(idUsuario);
+
+		request.setAttribute("listaCandidaturas", listaCandidaturas);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/user/profissional/lista.jsp");
+		dispatcher.forward(request, response);
+	}
+
+	private void remove(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		Long id = Long.parseLong(request.getParameter("id"));
 
 		Profissional profissional = new Profissional(id);
@@ -173,38 +173,38 @@ public class ProfissionaisUserController extends HttpServlet{
 		response.sendRedirect("lista");
 	}
 
-    private void listaVagas(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogado");
-    	Long idUsuario = usuario.getId();
-    	
-    	VagaDAO vagasDao = new VagaDAO();
-    	
-    	List<Vaga> vagasAbertas = vagasDao.getAllAberta();
-    	List<Candidatura> candidaturas = candidaturaDao.getCandidaturasByPessoa(idUsuario);
-    	
-    	System.out.println(vagasAbertas.size());
-    	
-    	for(Candidatura c : candidaturas) {
-    		vagasAbertas.removeIf(n -> (n.getIdvaga() == c.getIdvaga()));
-    	}
-    	
-    	
-    	request.setAttribute("listaVagas", vagasAbertas);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/user/profissional/aplicarVaga.jsp");
-        dispatcher.forward(request, response);
-    	
-    }
-    
+	private void listaVagas(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogado");
+		Long idUsuario = usuario.getId();
+
+		VagaDAO vagasDao = new VagaDAO();
+
+		List<Vaga> vagasAbertas = vagasDao.getAllAberta();
+		List<Candidatura> candidaturas = candidaturaDao.getCandidaturasByPessoa(idUsuario);
+
+		System.out.println(vagasAbertas.size());
+
+		for (Candidatura c : candidaturas) {
+			vagasAbertas.removeIf(n -> (n.getIdvaga() == c.getIdvaga()));
+		}
+
+		request.setAttribute("listaVagas", vagasAbertas);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/user/profissional/aplicarVaga.jsp");
+		dispatcher.forward(request, response);
+
+	}
+
 	private void apresentaFormFile(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		Long idVaga = Long.parseLong(request.getParameter("id"));
 		VagaDAO vagasDao = new VagaDAO();
 		Vaga vaga = vagasDao.getVaga(idVaga);
-		
+
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/user/profissional/formularioFile.jsp");
 		request.getSession().setAttribute("ultimaVagaCandidatada", vaga);
 		request.setAttribute("vaga", vaga);
 		dispatcher.forward(request, response);
 	}
-    
+
 }

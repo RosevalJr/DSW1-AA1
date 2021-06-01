@@ -7,9 +7,9 @@
 <fmt:bundle basename="messages">
 
 	<head>
-		<title><fmt:message key="header.empresa" /></title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><fmt:message key="header.empresa" /></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	</head>
 
 	<body>
@@ -21,21 +21,19 @@
 				<fmt:message key="empresa.receber" />
 			</h1>
 			<h2>
-				<a href="/<%=contextPath%>/admins/profissionais"> 
-					<fmt:message key="profissional.entidade" />
-				</a> 
-				&nbsp;&nbsp;&nbsp;
-				<a href="${pageContext.request.contextPath}/logout.jsp"> 
-					<fmt:message key="sair.link" />
-				</a>
-				<br/>
-				<br/>
-				<a href="/<%=contextPath%>/admins/empresas/cadastro">
+				<a href="/<%=contextPath%>/admins/profissionais"> <fmt:message
+						key="profissional.entidade" />
+				</a> &nbsp;&nbsp;&nbsp; <a
+					href="${pageContext.request.contextPath}/logout.jsp"> <fmt:message
+						key="sair.link" />
+				</a> <br /> <br /> <a href="/<%=contextPath%>/admins/empresas/cadastro">
 					<fmt:message key="empresa.criar" />
-				</a> 
+				</a>
 			</h2>
-			<h3><fmt:message key="empresa.listar" /></h3>
-			<br/>
+			<h3>
+				<fmt:message key="empresa.listar" />
+			</h3>
+			<br />
 		</div>
 		<div align="center">
 			<table border="1">
@@ -60,14 +58,11 @@
 						<td><a
 							href="/<%= contextPath %>/admins/empresas/edicao?id=<c:out value='${empresa.id}' />">
 								<fmt:message key="empresa.update" />
-						</a> 
-                                &nbsp;&nbsp;&nbsp;&nbsp;
-                                <a
-									href="/<%= contextPath %>/admins/empresas/remocao?id=<c:out value='${empresa.id}' />"
-									onclick="return confirm('<fmt:message key="confirmar.link" />');">
-									<fmt:message key="empresa.delete" />
-								</a>
-						</td>
+						</a> &nbsp;&nbsp;&nbsp;&nbsp; <a
+							href="/<%= contextPath %>/admins/empresas/remocao?id=<c:out value='${empresa.id}' />"
+							onclick="return confirm('<fmt:message key="confirmar.link" />');">
+								<fmt:message key="empresa.delete" />
+						</a></td>
 					</tr>
 				</c:forEach>
 			</table>

@@ -7,9 +7,9 @@
 <fmt:bundle basename="messages">
 
 	<head>
-		<title><fmt:message key="header.empresa" /></title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><fmt:message key="header.empresa" /></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	</head>
 
 	<body>
@@ -21,17 +21,13 @@
 				<fmt:message key="empresa.receber" />
 			</h1>
 			<h2>
-				<a href="/<%=contextPath%>/profissionais"> 
-					<fmt:message key="profissional.entidade" />
-				</a> 
-				&nbsp;&nbsp;&nbsp;
-				<a href="${pageContext.request.contextPath}/logout.jsp"> 
-					<fmt:message key="sair.link" />
-				</a>
-				<br/>
-				<br/>
-				<a href="lista"> 
-					<fmt:message key="empresa.listar" />
+				<a href="/<%=contextPath%>/profissionais"> <fmt:message
+						key="profissional.entidade" />
+				</a> &nbsp;&nbsp;&nbsp; <a
+					href="${pageContext.request.contextPath}/logout.jsp"> <fmt:message
+						key="sair.link" />
+				</a> <br /> <br /> <a href="lista"> <fmt:message
+						key="empresa.listar" />
 				</a>
 			</h2>
 		</div>

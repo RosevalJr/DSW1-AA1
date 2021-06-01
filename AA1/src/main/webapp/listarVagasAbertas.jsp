@@ -7,9 +7,9 @@
 <fmt:bundle basename="messages">
 
 	<head>
-		<title><fmt:message key="header.vaga" /></title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><fmt:message key="header.vaga" /></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	</head>
 
 	<body>
@@ -21,13 +21,11 @@
 				<fmt:message key="vaga.receber" />
 			</h1>
 			<h2>
-				<a href="/<%=contextPath%>/login.jsp"> 
-					<fmt:message key="sair.link" />
-				</a> 
-				<br/>
-				<br/>
+				<a href="/<%=contextPath%>/login.jsp"> <fmt:message
+						key="sair.link" />
+				</a> <br /> <br />
 			</h2>
-			<br/>
+			<br />
 		</div>
 		<div align="center">
 			<table border="1">
@@ -51,16 +49,18 @@
 				</c:forEach>
 			</table>
 		</div>
-		
+
 		<div align="center">
 			<h3>
 				<fmt:message key="digite.cidade" />
 			</h3>
-		
-		
+
+
 			<form name="A" action="auxListaVagasCidade" method="POST">
-				<input type="text" name="B" placeholder="<fmt:message key="nome.cidade"/>"/> <br> <br>
-				<input type="submit" name="cidade" value="<fmt:message key="enviar"/>">
+				<input type="text" name="B"
+					placeholder="<fmt:message key="nome.cidade"/>" /> <br> <br>
+				<input type="submit" name="cidade"
+					value="<fmt:message key="enviar"/>">
 			</form>
 		</div>
 	</body>
