@@ -35,8 +35,8 @@ $ ./catalina.sh run
 4- Acessando a aplicação pelo navegador
 localhost:8080/AA1/
 
-5- Observações do bando de dados populado
-- O bando de dados criado seguinte esses passos já foi populado para que todas as funcionalidades implementadas neste sistema possam ser testadas.
+5- Observações do banco de dados populado
+- O bando de dados criado seguindo esses passos já foi populado para que todas as funcionalidades implementadas neste sistema possam ser testadas.
 - Para acessar as funcionalidades que necessitam do papel de administrador, entrar no sistema com LOGIN=admin, SENHA=admin.
 - Para acessar as funcionliadade que necessitam do papel de usuário Profissional, pode-se entrar no sistema com LOGIN=rdmaljr@hotmail.com SENHA=123password ou LOGIN=marcela@hotmail.com SENHA=1234password ou LOGIN=jose@estudante.ufscar.br SENHA=1235password.
 - Para acessar as funcionalidade que necessitam do papel de usuário Empresa, pode-se entrar no sistema com LOGIN=microsoft@hotmail.com SENHA=1236password ou LOGIN=roseval@estudante.ufscar.br SENHA=1237password.
